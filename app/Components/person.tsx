@@ -35,7 +35,7 @@ const Person = ({
           </div>
 
           {/* سمت راست - نام و مهارت‌ها */}
-          <div className="flex-1 text-right">
+          <div className="flex-3 text-right">
             <h2 className="text-[27px] font-light tracking-wide text-white mb-6">
               {name}
             </h2>
@@ -44,7 +44,7 @@ const Person = ({
               {skills.map((skill, index) => (
                 <p
                   key={index}
-                  className="text-[27px] font-light text-gray-300"
+                  className="text-[13px] font-light text-gray-300"
                 >
                   {skill}
                 </p>
