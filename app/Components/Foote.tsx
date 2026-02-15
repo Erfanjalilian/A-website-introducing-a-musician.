@@ -23,7 +23,7 @@ const Footer = () => {
           {/* اطلاعات کپی‌رایت */}
           <div className="text-center">
             <p className="text-xs text-gray-500">
-              © {currentYear} آرش کاظمی. تمام حقوق محفوظ است.
+              © {currentYear} طراحی شده توسط سید محمود زرگری
             </p>
           </div>
         </div>
