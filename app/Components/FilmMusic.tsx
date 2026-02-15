@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// تعریف نوع داده برای پروژه‌های موسیقی فیلم
+// Type definition for film music projects
 interface FilmProject {
   id: string;
   title: string;
@@ -23,25 +23,23 @@ const FilmMusic = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // دریافت داده‌ها از API
+  // Fetch projects from API
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         setLoading(true);
-        // فیلتر کردن پروژه‌های با دسته‌بندی film-music
         const response = await fetch('https://6991a5b96279728b0154fe77.mockapi.io/theSong/Projects');
         
         if (!response.ok) {
-          throw new Error('خطا در دریافت داده‌ها');
+          throw new Error('Error fetching data');
         }
-        
+
         const data = await response.json();
-        // فیلتر برای موسیقی فیلم
         const filmProjects = data.filter((project: FilmProject) => project.category === 'film-music');
         setProjects(filmProjects);
         setError(null);
       } catch (err) {
-        setError('مشکلی در بارگذاری پروژه‌ها پیش آمده است');
+        setError('Failed to load film music projects');
         console.error(err);
       } finally {
         setLoading(false);
@@ -51,15 +49,15 @@ const FilmMusic = () => {
     fetchProjects();
   }, []);
 
-  // توضیحات پیش‌فرض برای هر پروژه (چون API ما description ندارد)
+  // Default descriptions for projects (since API has no description)
   const getProjectDescription = (project: FilmProject) => {
     const descriptions: { [key: string]: string } = {
-      '1': 'این یک دموی ارکسترال سینماتیک و تاریک است که با تم "Carol of the Bells" ساخته شده و برای تریلر فیلم کریسمسی ابرقهرمانی مناسب است.',
-      '2': 'این یک بازسازی MIDI از موسیقی تیتراژ اصلی فیلم The Omen (2006) ساخته Marco Beltrami با نمره کامل است.',
-      '3': 'تمام موسیقی‌های اصلی ساخته، ارکستراسیون، رهبری و ضبط شده در جلسات استودیویی با نوازندگان حرفه‌ای.',
+      '1': 'A dark cinematic orchestral demo based on "Carol of the Bells", perfect for a superhero Christmas movie trailer.',
+      '2': 'A full MIDI recreation of the original score from The Omen (2006) by Marco Beltrami.',
+      '3': 'All original music composed, orchestrated, conducted, and recorded in studio session with real musicians.',
     };
-    
-    return descriptions[project.id] || 'توضیحات مربوط به این پروژه موسیقی فیلم. این قطعه برای اهداف نمایشی ساخته شده است.';
+
+    return descriptions[project.id] || 'Description for this film music project. This track is made for demonstration purposes.';
   };
 
   if (loading) {
@@ -68,7 +66,7 @@ const FilmMusic = () => {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="w-[60%] mx-auto">
             <h2 className="text-3xl font-light tracking-wide text-white mb-10 text-center">
-              موسیقی فیلم
+              Film Music
             </h2>
             
             <div className="flex justify-center items-center h-64">
@@ -86,7 +84,7 @@ const FilmMusic = () => {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="w-[60%] mx-auto">
             <h2 className="text-3xl font-light tracking-wide text-white mb-10 text-center">
-              موسیقی فیلم
+              Film Music
             </h2>
             
             <div className="text-center text-red-400 py-12">
@@ -103,26 +101,26 @@ const FilmMusic = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="w-full md:w-[60%] mx-auto">
           
-          {/* عنوان بخش */}
+          {/* Section title */}
           <h2 className="text-3xl md:text-4xl font-light tracking-wide text-white mb-12 text-center">
-            موسیقی فیلم
+            Film Music
           </h2>
           <hr />
           <br /><br />
 
-          {/* اگر پروژه‌ای وجود نداشت */}
+          {/* No projects message */}
           {projects.length === 0 && (
             <p className="text-center text-gray-400 py-12">
-              هیچ پروژه موسیقی فیلمی یافت نشد.
+              No film music projects found.
             </p>
           )}
 
-          {/* شبکه پروژه‌ها - ۲ ستونه */}
+          {/* Project grid - 2 columns */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {projects.map((project) => (
               <div key={project.id} className="flex flex-col">
                 
-                {/* کارت پروژه */}
+                {/* Project card */}
                 <Link href={`/projects/${project.slug}`} className="group">
                   <div className="relative w-full aspect-[4/3] overflow-hidden bg-gray-800">
                     <Image
@@ -133,7 +131,7 @@ const FilmMusic = () => {
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
                     
-                    {/* سال پروژه (اختیاری) */}
+                    {/* Project year */}
                     {project.year && (
                       <div className="absolute top-4 right-4 bg-black/60 text-white text-xs px-2 py-1 rounded">
                         {project.year}
@@ -142,7 +140,7 @@ const FilmMusic = () => {
                   </div>
                 </Link>
 
-                {/* توضیحات زیر فیلم */}
+                {/* Project description */}
                 <div className="mt-4 text-right">
                   <h3 className="text-lg font-medium text-white mb-2 line-clamp-1">
                     {project.title}
@@ -151,9 +149,9 @@ const FilmMusic = () => {
                     {getProjectDescription(project)}
                   </p>
                   
-                  {/* اخطار برای دمو بودن (مطابق با طراحی مرجع) */}
+                  {/* Demo disclaimer */}
                   <p className="text-xs text-gray-500 mt-3 italic">
-                    این کلیپ‌ها حاوی موسیقی اصلی فیلم‌ها نیستند. این صحنه‌ها برای اهداف نمایشی بازسازی شده‌اند.
+                    These clips do not contain original music from the TV/films. These are re-scored for demonstration purposes.
                   </p>
                 </div>
               </div>

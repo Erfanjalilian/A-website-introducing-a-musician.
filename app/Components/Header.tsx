@@ -1,7 +1,5 @@
 'use client';
 
-
-
 import { useState } from 'react';
 import Link from 'next/link';
 import { FaLinkedinIn, FaSoundcloud, FaInstagram, FaVimeoV } from 'react-icons/fa';
@@ -11,29 +9,30 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const pageLinks = [
-    { id: 1, title: 'پروژه‌ها', href: '/projects' },
-    { id: 2, title: 'موسیقی فیلم', href: '/film-music' },
-    { id: 3, title: 'موسیقی لایبرری', href: '/library-music' },
-    { id: 4, title: 'موسیقی تجاری', href: '/commercial-music' }
+    { id: 1, title: 'Projects', href: '/projects' },
+    { id: 2, title: 'Film Music', href: '/film-music' },
+    { id: 3, title: 'Library Music', href: '/library-music' },
+    { id: 4, title: 'Commercial Music', href: '/commercial-music' }
   ];
 
   const socialIcons = [
-    { id: 1, icon: FaLinkedinIn, href: 'https://linkedin.com', label: 'لینکدین' },
-    { id: 2, icon: FaSoundcloud, href: 'https://soundcloud.com', label: 'ساوندکلاود' },
-    { id: 3, icon: SiSpotify, href: 'https://spotify.com', label: 'اسپاتیفای' },
-    { id: 4, icon: FaInstagram, href: 'https://instagram.com', label: 'اینستاگرام' },
-    { id: 5, icon: SiApplemusic, href: 'https://music.apple.com', label: 'اپل موزیک' },
-    { id: 6, icon: FaVimeoV, href: 'https://vimeo.com', label: 'ویمئو' },
+    { id: 1, icon: FaLinkedinIn, href: 'https://linkedin.com', label: 'LinkedIn' },
+    { id: 2, icon: FaSoundcloud, href: 'https://soundcloud.com', label: 'SoundCloud' },
+    { id: 3, icon: SiSpotify, href: 'https://spotify.com', label: 'Spotify' },
+    { id: 4, icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram' },
+    { id: 5, icon: SiApplemusic, href: 'https://music.apple.com', label: 'Apple Music' },
+    { id: 6, icon: FaVimeoV, href: 'https://vimeo.com', label: 'Vimeo' },
   ];
 
   return (
     <header className="bg-[#1d1919] text-white">
-      {/* دسکتاپ */}
+      
+      {/* Desktop */}
       <div className="hidden md:block h-[250px]">
         <div className="w-full max-w-7xl mx-auto px-4 md:px-8 h-full">
           <div className="grid grid-cols-12 gap-4 h-full items-center">
             
-            {/* سمت راست - لیست عمودی صفحات */}
+            {/* Right side - Vertical page links */}
             <div className="col-span-3 flex flex-col justify-center space-y-4">
               {pageLinks.map((link) => (
                 <Link
@@ -46,17 +45,17 @@ const Header = () => {
               ))}
             </div>
 
-            {/* مرکز - نام و عنوان */}
+            {/* Center - Name & Title */}
             <div className="col-span-6 flex flex-col items-center justify-center text-center">
-              <h1 className="text-[85px] font-thin tracking-[2px] leading-[1.2em] font-lato uppercase text-white/90 mt-1 mb-0 inline-block">
-                آرش کاظمی
+              <h1 className="text-[85px] font-thin tracking-[2px] leading-[1.2em] uppercase text-white/90 mt-1 mb-0 inline-block">
+                Arash Kazemi
               </h1>
               <h2 className="text-lg font-light text-gray-400">
-                موسیقی و صدا
+                Music & Sound
               </h2>
             </div>
 
-            {/* سمت چپ - آیکن‌های اجتماعی */}
+            {/* Left side - Social Icons */}
             <div className="col-span-3 flex items-start justify-end space-x-4">
               {socialIcons.map((social) => {
                 const Icon = social.icon;
@@ -79,27 +78,28 @@ const Header = () => {
         </div>
       </div>
 
-      {/* موبایل */}
+      {/* Mobile */}
       <div className="md:hidden h-[200px] flex flex-col items-center justify-start px-4 relative pt-4">
-        {/* دکمه منو */}
+        
+        {/* Menu Button */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="text-white text-lg font-bold mb-2"
         >
-          منو
+          Menu
         </button>
 
-        {/* همیشه نمایش نام و عنوان زیر منو */}
+        {/* Always visible name & title */}
         <div className="text-center mb-2">
           <h1 className="text-2xl font-thin tracking-[2px] text-white/90 mb-1">
-            آرش کاظمی
+            Arash Kazemi
           </h1>
           <h2 className="text-base font-light text-gray-400">
-            موسیقی و صدا
+            Music & Sound
           </h2>
         </div>
 
-        {/* منوی کشویی فقط صفحات */}
+        {/* Dropdown menu (pages only) */}
         {menuOpen && (
           <div className="bg-[#1d1919] w-full flex flex-col items-center py-4 space-y-2 border-t border-gray-700 z-10">
             {pageLinks.map((link) => (
