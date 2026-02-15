@@ -22,6 +22,11 @@ const FilmMusic = () => {
   const [projects, setProjects] = useState<FilmProject[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Fetch projects from API
   useEffect(() => {
@@ -62,16 +67,26 @@ const FilmMusic = () => {
 
   if (loading) {
     return (
-      <section className="bg-[#1d1919] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="w-[60%] mx-auto">
-            <h2 className="text-3xl font-light tracking-wide text-white mb-10 text-center">
-              Film Music
-            </h2>
-            
-            <div className="flex justify-center items-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
-            </div>
+      <section 
+        className="relative py-20 md:py-28 overflow-hidden"
+        style={{ backgroundColor: 'var(--bg-body)' }}
+      >
+        <div 
+          className="absolute top-0 left-0 right-0 h-px opacity-30"
+          style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
+        />
+        <div className="max-w-5xl mx-auto px-6 md:px-10">
+          <h2 
+            className="font-light text-3xl md:text-4xl tracking-[0.2em] uppercase text-center mb-16"
+            style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
+          >
+            Film Music
+          </h2>
+          <div className="flex justify-center items-center h-64">
+            <div 
+              className="animate-spin rounded-full h-10 w-10 border-2 border-transparent"
+              style={{ borderTopColor: 'var(--accent)', borderRightColor: 'var(--accent)' }}
+            />
           </div>
         </div>
       </section>
@@ -80,16 +95,26 @@ const FilmMusic = () => {
 
   if (error) {
     return (
-      <section className="bg-[#1d1919] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="w-[60%] mx-auto">
-            <h2 className="text-3xl font-light tracking-wide text-white mb-10 text-center">
-              Film Music
-            </h2>
-            
-            <div className="text-center text-red-400 py-12">
-              {error}
-            </div>
+      <section 
+        className="relative py-20 md:py-28 overflow-hidden"
+        style={{ backgroundColor: 'var(--bg-body)' }}
+      >
+        <div 
+          className="absolute top-0 left-0 right-0 h-px opacity-30"
+          style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
+        />
+        <div className="max-w-5xl mx-auto px-6 md:px-10">
+          <h2 
+            className="font-light text-3xl md:text-4xl tracking-[0.2em] uppercase text-center mb-12"
+            style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
+          >
+            Film Music
+          </h2>
+          <div 
+            className="text-center py-12 text-sm tracking-wide"
+            style={{ color: 'var(--text-muted)' }}
+          >
+            {error}
           </div>
         </div>
       </section>
@@ -97,66 +122,143 @@ const FilmMusic = () => {
   }
 
   return (
-    <section className="bg-[#1d1919] text-white py-16">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="w-full md:w-[60%] mx-auto">
-          
-          {/* Section title */}
-          <h2 className="text-3xl md:text-4xl font-light tracking-wide text-white mb-12 text-center">
-            Film Music
-          </h2>
-          <hr />
-          <br /><br />
+    <section 
+      className="relative py-20 md:py-28 overflow-hidden"
+      style={{ backgroundColor: 'var(--bg-body)' }}
+    >
+      {/* Accent line */}
+      <div 
+        className="absolute top-0 left-0 right-0 h-px opacity-30"
+        style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
+      />
 
-          {/* No projects message */}
-          {projects.length === 0 && (
-            <p className="text-center text-gray-400 py-12">
-              No film music projects found.
-            </p>
-          )}
+      <div className="max-w-5xl mx-auto px-6 md:px-10">
+        
+        {/* Section title */}
+        <h2 
+          className={`
+            font-light text-3xl md:text-4xl tracking-[0.2em] uppercase text-center mb-10
+            opacity-0
+            ${mounted ? 'animate-fade-in-up' : ''}
+          `}
+          style={{ 
+            fontFamily: 'var(--font-display)', 
+            color: 'var(--text-primary)',
+            animationDelay: '100ms',
+            animationFillMode: 'forwards'
+          }}
+        >
+          Film Music
+        </h2>
 
-          {/* Project grid - 2 columns */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {projects.map((project) => (
-              <div key={project.id} className="flex flex-col">
-                
-                {/* Project card */}
-                <Link href={`/projects/${project.slug}`} className="group">
-                  <div className="relative w-full aspect-[4/3] overflow-hidden bg-gray-800">
-                    <Image
-                      src={project.coverImage}
-                      alt={project.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                    
-                    {/* Project year */}
-                    {project.year && (
-                      <div className="absolute top-4 right-4 bg-black/60 text-white text-xs px-2 py-1 rounded">
-                        {project.year}
-                      </div>
-                    )}
-                  </div>
-                </Link>
+        {/* Divider */}
+        <div 
+          className={`
+            w-24 h-px mx-auto mb-14
+            opacity-0
+            ${mounted ? 'animate-fade-in' : ''}
+          `}
+          style={{ 
+            backgroundColor: 'var(--border-subtle)',
+            animationDelay: '200ms',
+            animationFillMode: 'forwards'
+          }}
+        />
 
-                {/* Project description */}
-                <div className="mt-4 text-right">
-                  <h3 className="text-lg font-medium text-white mb-2 line-clamp-1">
+        {/* No projects message */}
+        {projects.length === 0 && (
+          <p 
+            className="text-center py-16 text-sm tracking-wide"
+            style={{ color: 'var(--text-muted)' }}
+          >
+            No film music projects found.
+          </p>
+        )}
+
+        {/* Project grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
+          {projects.map((project, index) => (
+            <article 
+              key={project.id} 
+              className={`
+                flex flex-col opacity-0
+                ${mounted ? 'animate-fade-in-up' : ''}
+              `}
+              style={{ 
+                animationDelay: `${250 + index * 100}ms`,
+                animationFillMode: 'forwards'
+              }}
+            >
+              <Link href={`/projects/${project.slug}`} className="group block">
+                {/* Project image */}
+                <div 
+                  className="relative w-full aspect-[4/3] overflow-hidden
+                             transition-all duration-500 ease-out
+                             group-hover:shadow-[0_0_50px_rgba(201,169,98,0.12)]"
+                  style={{ 
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: '2px'
+                  }}
+                >
+                  <Image
+                    src={project.coverImage}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  
+                  {/* Overlay on hover */}
+                  <div 
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 
+                               transition-opacity duration-400"
+                    style={{ 
+                      background: 'linear-gradient(to top, rgba(20,18,18,0.6) 0%, transparent 50%)'
+                    }}
+                  />
+                  
+                  {/* Year badge */}
+                  {project.year && (
+                    <div 
+                      className="absolute top-4 right-4 text-xs tracking-[0.15em] uppercase px-3 py-1.5"
+                      style={{ 
+                        backgroundColor: 'rgba(20,18,18,0.7)',
+                        color: 'var(--text-muted)',
+                        border: '1px solid var(--border-subtle)'
+                      }}
+                    >
+                      {project.year}
+                    </div>
+                  )}
+                </div>
+
+                {/* Project info */}
+                <div className="mt-5 text-center md:text-right">
+                  <h3 
+                    className="text-base md:text-lg font-light tracking-[0.1em] mb-2 line-clamp-1
+                               transition-colors duration-300 group-hover:text-[var(--accent)]"
+                    style={{ color: 'var(--text-primary)' }}
+                  >
                     {project.title}
                   </h3>
-                  <p className="text-sm text-gray-300 leading-relaxed line-clamp-3">
+                  <p 
+                    className="text-sm leading-relaxed line-clamp-3"
+                    style={{ color: 'var(--text-muted)' }}
+                  >
                     {getProjectDescription(project)}
                   </p>
                   
                   {/* Demo disclaimer */}
-                  <p className="text-xs text-gray-500 mt-3 italic">
-                    These clips do not contain original music from the TV/films. These are re-scored for demonstration purposes.
+                  <p 
+                    className="text-xs mt-4 italic tracking-wide"
+                    style={{ color: 'var(--text-dim)' }}
+                  >
+                    These clips do not contain original music from the TV/films. Re-scored for demonstration purposes.
                   </p>
                 </div>
-              </div>
-            ))}
-          </div>
+              </Link>
+            </article>
+          ))}
         </div>
       </div>
     </section>
