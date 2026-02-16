@@ -26,10 +26,10 @@ const Header = () => {
   }, [menuOpen]);
 
   const pageLinks = [
-    { id: 1, title: 'Projects', href: '/projects' },
+    { id: 1, title: 'Projects', href: '/Projects' },
     { id: 2, title: 'Film Music', href: '/' },
     { id: 3, title: 'Library Music', href: '/LibraryMusic' },
-    { id: 4, title: 'Commercial Music', href: '/commercial-music' }
+    { id: 4, title: 'Commercial Music', href: '/CommercialMusic' }
   ];
 
   const socialIcons = [
