@@ -27,8 +27,8 @@ const Header = () => {
 
   const pageLinks = [
     { id: 1, title: 'Projects', href: '/projects' },
-    { id: 2, title: 'Film Music', href: '/film-music' },
-    { id: 3, title: 'Library Music', href: '/library-music' },
+    { id: 2, title: 'Film Music', href: '/' },
+    { id: 3, title: 'Library Music', href: '/LibraryMusic' },
     { id: 4, title: 'Commercial Music', href: '/commercial-music' }
   ];
 
