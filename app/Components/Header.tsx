@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaLinkedinIn, FaSoundcloud, FaInstagram, FaVimeoV } from 'react-icons/fa';
 import { SiSpotify, SiApplemusic } from 'react-icons/si';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -12,6 +13,17 @@ const Header = () => {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [menuOpen]);
 
   const pageLinks = [
     { id: 1, title: 'Projects', href: '/projects' },
@@ -149,86 +161,96 @@ const Header = () => {
 
       {/* Mobile */}
       <div className="md:hidden">
-        <div className="flex flex-col items-center justify-start px-5 pt-6 pb-4">
+        <div className="flex flex-col items-center justify-start px-5 pt-6 pb-4 relative">
           
-          {/* Menu Button */}
+          {/* Menu Button - Left side */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="absolute top-5 right-5 z-20 px-3 py-2 text-xs tracking-[0.25em] uppercase transition-all duration-300"
+            className="absolute top-5 left-5 z-20 p-2 transition-all duration-300"
             style={{ color: 'var(--text-muted)' }}
             aria-expanded={menuOpen}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           >
-            <span className="inline-block transition-transform duration-300">
-              {menuOpen ? 'Close' : 'Menu'}
-            </span>
+            {menuOpen ? (
+              <XMarkIcon className="w-8 h-8" strokeWidth={1.5} />
+            ) : (
+              <Bars3Icon className="w-8 h-8" strokeWidth={1.5} />
+            )}
           </button>
 
-          {/* Name & Title */}
+          {/* Name & Title - hidden when menu is open */}
+          {!menuOpen && (
+            <div 
+              className={`
+                text-center mb-4
+                opacity-0
+                ${mounted ? 'animate-fade-in-up' : ''}
+              `}
+              style={{ animationFillMode: 'forwards' }}
+            >
+              <h1 
+                className="font-light text-3xl tracking-[0.12em] uppercase mb-1"
+                style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
+              >
+                Arash Kazemi
+              </h1>
+              <h2 
+                className="text-sm font-light tracking-[0.3em] uppercase"
+                style={{ color: 'var(--text-dim)' }}
+              >
+                Music & Sound
+              </h2>
+            </div>
+          )}
+        </div>
+
+        {/* Full-screen overlay menu */}
+        <div
+          className={`
+            fixed inset-0 z-40 w-full h-screen
+            flex flex-col items-center justify-center
+            transition-all duration-300 ease-out
+            md:hidden
+            ${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}
+          `}
+          style={{ backgroundColor: 'var(--bg-header)' }}
+        >
+          {/* Accent line */}
           <div 
-            className={`
-              text-center mb-4
-              opacity-0
-              ${mounted ? 'animate-fade-in-up' : ''}
-            `}
-            style={{ animationFillMode: 'forwards' }}
+            className="absolute top-0 left-0 right-0 h-px opacity-50"
+            style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
+          />
+          {/* Close button - top left */}
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="absolute top-5 left-5 z-50 p-2 transition-colors duration-200"
+            style={{ color: 'var(--text-muted)' }}
+            aria-label="Close menu"
           >
+            <XMarkIcon className="w-8 h-8" strokeWidth={1.5} />
+          </button>
+
+          {/* Name + Page links - vertically centered */}
+          <div className="flex flex-col items-center justify-center gap-10">
             <h1 
-              className="font-light text-3xl tracking-[0.12em] uppercase mb-1"
+              className="font-light text-2xl tracking-[0.15em] uppercase"
               style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
             >
               Arash Kazemi
             </h1>
-            <h2 
-              className="text-sm font-light tracking-[0.3em] uppercase"
-              style={{ color: 'var(--text-dim)' }}
-            >
-              Music & Sound
-            </h2>
-          </div>
-
-          {/* Dropdown menu */}
-          <div
-            className={`
-              w-full overflow-hidden
-              transition-all duration-400 ease-out
-              ${menuOpen ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'}
-            `}
-          >
-            <div 
-              className="py-5 border-t flex flex-col items-center gap-4"
-              style={{ borderColor: 'var(--border-subtle)' }}
-            >
-              {pageLinks.map((link, i) => (
-                <Link
-                  key={link.id}
-                  href={link.href}
-                  className="text-sm tracking-[0.2em] uppercase transition-colors duration-200 hover:opacity-80"
-                  style={{ color: 'var(--text-muted)' }}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {link.title}
-                </Link>
-              ))}
-              {/* Social icons on mobile */}
-              <div className="flex gap-4 pt-2">
-                {socialIcons.map((social) => {
-                  const Icon = social.icon;
-                  return (
-                    <a
-                      key={social.id}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 rounded-full transition-colors duration-200 hover:opacity-80"
-                      style={{ color: 'var(--text-dim)' }}
-                      aria-label={social.label}
-                    >
-                      <Icon className="w-5 h-5" />
-                    </a>
-                  );
-                })}
-              </div>
-            </div>
+            <nav className="flex flex-col items-center gap-8">
+              {pageLinks.map((link) => (
+              <Link
+                key={link.id}
+                href={link.href}
+                className="text-lg tracking-[0.25em] uppercase transition-colors duration-200 hover:opacity-80"
+                style={{ color: 'var(--text-primary)' }}
+                onClick={() => setMenuOpen(false)}
+              >
+                {link.title}
+              </Link>
+            ))}
+            </nav>
           </div>
         </div>
       </div>
