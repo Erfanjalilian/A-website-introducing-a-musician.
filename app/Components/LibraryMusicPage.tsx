@@ -1,93 +1,70 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { PlayIcon, PauseIcon } from '@heroicons/react/24/solid';
 
-interface MusicTrack {
+interface BiographyData {
   id: string;
+  fullName: string;
+  stageName: string;
   title: string;
-  album: string;
-  category: string;
-  audioUrl: string;
-  coverImage: string;
-  duration: string;
-  license?: string;
-  description: string;
-  featured: boolean;
+  location: string;
+  shortBio: string;
+  biography: {
+    introduction: string;
+    careerJourney: string;
+    artisticApproach: string;
+    areasOfActivity: string[];
+    philosophy: string;
+  };
+  skills: string[];
+  yearsOfExperience: number;
+  availableFor: string[];
+  contact: {
+    email: string;
+    management: string;
+    booking: string;
+  };
+  socialMedia: {
+    instagram: string;
+    youtube: string;
+    spotify: string;
+  };
+  lastUpdated: string;
 }
 
-// Default placeholder for tracks (audio only, no images)
-const PLACEHOLDER_IMAGE = 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80';
-
-const LibraryMusicPage = () => {
-  const [tracks, setTracks] = useState<MusicTrack[]>([]);
+const Biography = () => {
+  const [data, setData] = useState<BiographyData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentlyPlaying, setCurrentlyPlaying] = useState<string | null>(null);
-  const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    const fetchTracks = async () => {
+    const fetchBiography = async () => {
       try {
         setLoading(true);
-        const response = await fetch('https://6991a6e96279728b01550164.mockapi.io/songs/MusicTracks');
+        const response = await fetch('https://6988e062780e8375a6895989.mockapi.io/Cv/Biography');
         
         if (!response.ok) {
-          throw new Error('Error fetching data');
+          throw new Error('Failed to fetch biography data');
         }
         
-        const data = await response.json();
-        const libraryTracks = data.filter((track: MusicTrack) => track.category === 'library-music');
-        setTracks(libraryTracks);
+        const result = await response.json();
+        setData(result[0]);
         setError(null);
       } catch (err) {
-        setError('There was a problem loading the music tracks');
+        setError('There was a problem loading the biography');
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchTracks();
+    fetchBiography();
   }, []);
-
-  const togglePlay = (trackId: string, audioUrl: string) => {
-    if (currentlyPlaying === trackId) {
-      if (audioElement) {
-        audioElement.pause();
-        audioElement.currentTime = 0;
-      }
-      setCurrentlyPlaying(null);
-      setAudioElement(null);
-    } else {
-      if (audioElement) {
-        audioElement.pause();
-        audioElement.currentTime = 0;
-      }
-      
-      const audio = new Audio(audioUrl);
-      audio.play();
-      audio.onended = () => {
-        setCurrentlyPlaying(null);
-        setAudioElement(null);
-      };
-      setAudioElement(audio);
-      setCurrentlyPlaying(trackId);
-    }
-  };
-
-  const getTrackImage = (track: MusicTrack) => {
-    if (!track.coverImage || failedImages.has(track.id)) {
-      return PLACEHOLDER_IMAGE;
-    }
-    return track.coverImage;
-  };
 
   if (loading) {
     return (
@@ -104,7 +81,7 @@ const LibraryMusicPage = () => {
             className="font-light text-3xl md:text-4xl tracking-[0.2em] uppercase mb-16"
             style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
           >
-            Library Music
+            Biography
           </h1>
           <div className="flex justify-center items-center h-64">
             <div 
@@ -132,7 +109,7 @@ const LibraryMusicPage = () => {
             className="font-light text-3xl md:text-4xl tracking-[0.2em] uppercase mb-12"
             style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
           >
-            Library Music
+            Biography
           </h1>
           <div 
             className="text-center py-12 text-sm tracking-wide"
@@ -144,6 +121,8 @@ const LibraryMusicPage = () => {
       </div>
     );
   }
+
+  if (!data) return null;
 
   return (
     <div 
@@ -172,24 +151,48 @@ const LibraryMusicPage = () => {
             animationFillMode: 'forwards'
           }}
         >
-          Library Music
+          Biography
         </h1>
         
-        {/* Subtitle */}
-        <p 
+        {/* Stage name and title */}
+        <div 
           className={`
-            text-left mb-14 max-w-2xl
+            mb-8
+            opacity-0
+            ${mounted ? 'animate-fade-in-up' : ''}
+          `}
+          style={{ 
+            animationDelay: '180ms',
+            animationFillMode: 'forwards'
+          }}
+        >
+          <p className="text-xl md:text-2xl" style={{ color: 'var(--text-dim)' }}>
+            {data.stageName}
+          </p>
+          <p className="text-sm tracking-[0.2em] uppercase mt-1" style={{ color: 'var(--text-muted)' }}>
+            {data.title}
+          </p>
+        </div>
+
+        {/* Location */}
+        <div 
+          className={`
+            flex items-center gap-2 mb-14
             opacity-0
             ${mounted ? 'animate-fade-in-up' : ''}
           `}
           style={{ 
             color: 'var(--text-muted)',
-            animationDelay: '180ms',
+            animationDelay: '220ms',
             animationFillMode: 'forwards'
           }}
         >
-          A collection of library music for use in film, television, and multimedia projects
-        </p>
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span className="text-sm tracking-wide">{data.location}</span>
+        </div>
 
         {/* Divider */}
         <div 
@@ -205,136 +208,360 @@ const LibraryMusicPage = () => {
           }}
         />
 
-        {tracks.length === 0 && (
-          <p 
-            className="text-center py-16 text-sm tracking-wide"
-            style={{ color: 'var(--text-muted)' }}
-          >
-            No library music tracks found.
+        {/* Short Bio - Featured quote */}
+        <div 
+          className={`
+            mb-16 p-8
+            opacity-0
+            ${mounted ? 'animate-fade-in-up' : ''}
+          `}
+          style={{ 
+            border: '1px solid var(--border-subtle)',
+            borderRadius: '2px',
+            backgroundColor: 'var(--bg-header)',
+            animationDelay: '300ms',
+            animationFillMode: 'forwards'
+          }}
+        >
+          <p className="text-lg md:text-xl italic leading-relaxed" style={{ color: 'var(--text-primary)' }}>
+            "{data.shortBio}"
           </p>
-        )}
+        </div>
 
-        {/* Track list */}
-        <div className="space-y-6 md:space-y-8">
-          {tracks.map((track, index) => (
-            <article
-              key={track.id}
-              className={`
-                overflow-hidden
-                transition-all duration-500 ease-out
-                hover:shadow-[0_0_40px_rgba(201,169,98,0.08)]
-                opacity-0
-                ${mounted ? 'animate-fade-in-up' : ''}
-              `}
+        {/* Biography sections */}
+        <div className="space-y-12">
+          {/* Introduction */}
+          <section
+            className={`
+              opacity-0
+              ${mounted ? 'animate-fade-in-up' : ''}
+            `}
+            style={{ 
+              animationDelay: '340ms',
+              animationFillMode: 'forwards'
+            }}
+          >
+            <h2 
+              className="text-sm tracking-[0.3em] uppercase mb-6"
+              style={{ color: 'var(--accent)' }}
+            >
+              Introduction
+            </h2>
+            <p className="text-base leading-relaxed" style={{ color: 'var(--text-dim)' }}>
+              {data.biography.introduction}
+            </p>
+          </section>
+
+          {/* Career Journey */}
+          <section
+            className={`
+              opacity-0
+              ${mounted ? 'animate-fade-in-up' : ''}
+            `}
+            style={{ 
+              animationDelay: '380ms',
+              animationFillMode: 'forwards'
+            }}
+          >
+            <h2 
+              className="text-sm tracking-[0.3em] uppercase mb-6"
+              style={{ color: 'var(--accent)' }}
+            >
+              Career Journey
+            </h2>
+            <p className="text-base leading-relaxed" style={{ color: 'var(--text-dim)' }}>
+              {data.biography.careerJourney}
+            </p>
+          </section>
+
+          {/* Artistic Approach */}
+          <section
+            className={`
+              opacity-0
+              ${mounted ? 'animate-fade-in-up' : ''}
+            `}
+            style={{ 
+              animationDelay: '420ms',
+              animationFillMode: 'forwards'
+            }}
+          >
+            <h2 
+              className="text-sm tracking-[0.3em] uppercase mb-6"
+              style={{ color: 'var(--accent)' }}
+            >
+              Artistic Approach
+            </h2>
+            <p className="text-base leading-relaxed" style={{ color: 'var(--text-dim)' }}>
+              {data.biography.artisticApproach}
+            </p>
+          </section>
+
+          {/* Philosophy */}
+          <section
+            className={`
+              opacity-0
+              ${mounted ? 'animate-fade-in-up' : ''}
+            `}
+            style={{ 
+              animationDelay: '460ms',
+              animationFillMode: 'forwards'
+            }}
+          >
+            <h2 
+              className="text-sm tracking-[0.3em] uppercase mb-6"
+              style={{ color: 'var(--accent)' }}
+            >
+              Philosophy
+            </h2>
+            <p className="text-base leading-relaxed" style={{ color: 'var(--text-dim)' }}>
+              {data.biography.philosophy}
+            </p>
+          </section>
+
+          {/* Areas of Activity */}
+          <section
+            className={`
+              opacity-0
+              ${mounted ? 'animate-fade-in-up' : ''}
+            `}
+            style={{ 
+              animationDelay: '500ms',
+              animationFillMode: 'forwards'
+            }}
+          >
+            <h2 
+              className="text-sm tracking-[0.3em] uppercase mb-6"
+              style={{ color: 'var(--accent)' }}
+            >
+              Areas of Activity
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {data.biography.areasOfActivity.map((activity, index) => (
+                <div 
+                  key={index}
+                  className="px-4 py-2 text-sm"
+                  style={{ 
+                    border: '1px solid var(--border-subtle)',
+                    color: 'var(--text-muted)'
+                  }}
+                >
+                  {activity}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Skills */}
+          <section
+            className={`
+              opacity-0
+              ${mounted ? 'animate-fade-in-up' : ''}
+            `}
+            style={{ 
+              animationDelay: '540ms',
+              animationFillMode: 'forwards'
+            }}
+          >
+            <h2 
+              className="text-sm tracking-[0.3em] uppercase mb-6"
+              style={{ color: 'var(--accent)' }}
+            >
+              Skills
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {data.skills.map((skill, index) => (
+                <span 
+                  key={index}
+                  className="px-4 py-1.5 text-sm"
+                  style={{ 
+                    backgroundColor: 'var(--bg-header)',
+                    border: '1px solid var(--border-subtle)',
+                    color: 'var(--text-dim)'
+                  }}
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </section>
+
+          {/* Available For */}
+          <section
+            className={`
+              opacity-0
+              ${mounted ? 'animate-fade-in-up' : ''}
+            `}
+            style={{ 
+              animationDelay: '580ms',
+              animationFillMode: 'forwards'
+            }}
+          >
+            <h2 
+              className="text-sm tracking-[0.3em] uppercase mb-6"
+              style={{ color: 'var(--accent)' }}
+            >
+              Available For
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {data.availableFor.map((item, index) => (
+                <span 
+                  key={index}
+                  className="px-4 py-1.5 text-sm"
+                  style={{ 
+                    backgroundColor: 'var(--bg-header)',
+                    border: '1px solid var(--border-subtle)',
+                    color: 'var(--text-dim)'
+                  }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </section>
+
+          {/* Experience */}
+          <section
+            className={`
+              opacity-0
+              ${mounted ? 'animate-fade-in-up' : ''}
+            `}
+            style={{ 
+              animationDelay: '620ms',
+              animationFillMode: 'forwards'
+            }}
+          >
+            <div 
+              className="p-6"
               style={{ 
-                animationDelay: `${320 + index * 80}ms`,
-                animationFillMode: 'forwards',
                 border: '1px solid var(--border-subtle)',
-                borderRadius: '2px'
+                backgroundColor: 'var(--bg-header)'
               }}
             >
-              <div className="flex flex-col md:flex-row">
-                
-                {/* Image + Play button */}
-                <div 
-                  className="relative md:w-48 md:min-w-[12rem] h-48 md:h-44 group overflow-hidden flex-shrink-0"
-                  style={{ backgroundColor: 'var(--bg-header)' }}
-                >
-                  <img
-                    src={getTrackImage(track)}
-                    alt={track.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    onError={() => setFailedImages((prev) => new Set(prev).add(track.id))}
-                  />
-                  
-                  {/* Play/Pause overlay */}
-                  <button
-                    onClick={() => togglePlay(track.id, track.audioUrl)}
-                    className="absolute inset-0 flex items-center justify-center
-                               bg-black/40 opacity-0 group-hover:opacity-100 
-                               transition-opacity duration-300"
-                  >
-                    <div 
-                      className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center
-                                 transition-all duration-300 ease-out
-                                 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(201,169,98,0.4)]"
-                      style={{ backgroundColor: 'rgba(201, 169, 98, 0.95)' }}
-                    >
-                      {currentlyPlaying === track.id ? (
-                        <PauseIcon className="w-7 h-7 md:w-8 md:h-8" style={{ color: 'var(--bg-body)' }} />
-                      ) : (
-                        <PlayIcon className="w-7 h-7 md:w-8 md:h-8 ml-1" style={{ color: 'var(--bg-body)' }} />
-                      )}
-                    </div>
-                  </button>
+              <p className="text-sm tracking-wide" style={{ color: 'var(--text-muted)' }}>
+                Years of Experience
+              </p>
+              <p className="text-2xl mt-1" style={{ color: 'var(--accent)' }}>
+                {data.yearsOfExperience} years
+              </p>
+            </div>
+          </section>
+        </div>
 
-                  {/* Duration badge */}
-                  {track.duration && (
-                    <div 
-                      className="absolute bottom-3 left-3 text-xs tracking-[0.1em] uppercase px-3 py-1.5"
-                      style={{ 
-                        backgroundColor: 'rgba(20,18,18,0.75)',
-                        color: 'var(--text-muted)',
-                        border: '1px solid var(--border-subtle)'
-                      }}
-                    >
-                      {track.duration}
-                    </div>
-                  )}
-                </div>
+        {/* Contact Information */}
+        <div 
+          className={`
+            mt-16 pt-8
+            opacity-0
+            ${mounted ? 'animate-fade-in-up' : ''}
+          `}
+          style={{ 
+            borderTop: '1px solid var(--border-subtle)',
+            animationDelay: '660ms',
+            animationFillMode: 'forwards'
+          }}
+        >
+          <h2 
+            className="text-sm tracking-[0.3em] uppercase mb-6"
+            style={{ color: 'var(--accent)' }}
+          >
+            Contact
+          </h2>
+          
+          <div className="space-y-3 text-sm">
+            <p style={{ color: 'var(--text-dim)' }}>
+              <span className="inline-block w-24 tracking-wide" style={{ color: 'var(--text-muted)' }}>Email:</span>
+              {data.contact.email}
+            </p>
+            <p style={{ color: 'var(--text-dim)' }}>
+              <span className="inline-block w-24 tracking-wide" style={{ color: 'var(--text-muted)' }}>Management:</span>
+              {data.contact.management}
+            </p>
+            <p style={{ color: 'var(--text-dim)' }}>
+              <span className="inline-block w-24 tracking-wide" style={{ color: 'var(--text-muted)' }}>Booking:</span>
+              {data.contact.booking}
+            </p>
+          </div>
+        </div>
 
-                {/* Track info */}
-                <div className="flex-1 p-6 md:p-6 text-left">
-                  <h2 
-                    className="text-lg md:text-xl font-light tracking-[0.08em] mb-2"
-                    style={{ color: 'var(--text-primary)' }}
-                  >
-                    {track.title}
-                  </h2>
-                  
-                  <p 
-                    className="text-sm mb-3"
-                    style={{ color: 'var(--text-dim)' }}
-                  >
-                    Album: {track.album}
-                  </p>
-                  
-                  <p 
-                    className="text-sm leading-relaxed mb-4"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    {track.description}
-                  </p>
-                  
-                  {track.license && (
-                    <p 
-                      className="text-xs italic tracking-wide"
-                      style={{ color: 'var(--text-dim)' }}
-                    >
-                      {track.license}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </article>
+        {/* Social Media */}
+        <div 
+          className={`
+            mt-8 flex gap-6
+            opacity-0
+            ${mounted ? 'animate-fade-in-up' : ''}
+          `}
+          style={{ 
+            animationDelay: '700ms',
+            animationFillMode: 'forwards'
+          }}
+        >
+          {Object.entries(data.socialMedia).map(([platform, url]) => (
+            <a
+              key={platform}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm capitalize transition-opacity hover:opacity-60"
+              style={{ color: 'var(--text-muted)' }}
+            >
+              {platform}
+            </a>
           ))}
         </div>
 
-        {/* Footer disclaimer */}
+        {/* Last Updated */}
         <div 
-          className="mt-14 pt-8 border-t"
-          style={{ borderColor: 'var(--border-subtle)' }}
+          className={`
+            mt-12 text-xs
+            opacity-0
+            ${mounted ? 'animate-fade-in' : ''}
+          `}
+          style={{ 
+            color: 'var(--text-dim)',
+            animationDelay: '740ms',
+            animationFillMode: 'forwards'
+          }}
         >
-          <p 
-            className="text-sm tracking-wide max-w-2xl"
-            style={{ color: 'var(--text-dim)' }}
-          >
-            These clips do not contain original music from the TV / films. These are scenes re-scored for demonstration purposes.
-          </p>
+          Last updated: {new Date(data.lastUpdated).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })}
         </div>
       </div>
+
+      {/* Animation keyframes - add to your global CSS or use Tailwind's @layer */}
+      <style jsx>{`
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        
+        .animate-fade-in-up {
+          animation: fade-in-up 0.8s ease-out forwards;
+        }
+        
+        .animate-fade-in {
+          animation: fade-in 0.8s ease-out forwards;
+        }
+      `}</style>
     </div>
   );
 };
 
-export default LibraryMusicPage;
+export default Biography;

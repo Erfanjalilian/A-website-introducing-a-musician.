@@ -12,9 +12,13 @@ interface PersonProps {
 const Person = ({
   name = "Arash Kazemi",
   skills = [
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    'Sound Design, Music Composition, Mixing & Recording',
-    'Experienced in film, theatre, and media projects'
+     'Design ',
+     'Mixing',
+     'Editing',
+     'Music Production',
+     'Recording',
+     'SFX',
+     'VO'
   ],
   imageUrl = "https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
 }: PersonProps) => {

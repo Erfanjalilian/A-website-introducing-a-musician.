@@ -26,10 +26,10 @@ const Header = () => {
   }, [menuOpen]);
 
   const pageLinks = [
+    { id: 2, title: 'Home', href: '/' },
     { id: 1, title: 'Projects', href: '/Projects' },
-    { id: 2, title: 'Film Music', href: '/' },
-    { id: 3, title: 'Library Music', href: '/LibraryMusic' },
-    { id: 4, title: 'Commercial Music', href: '/CommercialMusic' }
+    { id: 3, title: 'Biography', href: '/LibraryMusic' },
+    { id: 4, title: 'Portfolio Page', href: '/CommercialMusic' }
   ];
 
   const socialIcons = [
@@ -116,7 +116,7 @@ const Header = () => {
                   animationFillMode: 'forwards'
                 }}
               >
-                Music & Sound
+               Musician & Sound Designer
               </h2>
             </div>
 
