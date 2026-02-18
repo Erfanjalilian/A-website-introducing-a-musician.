@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Cormorant_Garamond } from "next/font/google";
 import Header from "./Components/Header";
 import Footer from "./Components/Foote";
+import { PageTitleProvider } from "./context/PageTitleContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -35,9 +36,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} antialiased`}
       >
+        <PageTitleProvider>
         <Header/>
         {children}
         <Footer />
+        </PageTitleProvider>
       </body>
     </html>
   );
