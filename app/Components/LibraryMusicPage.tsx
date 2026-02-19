@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 interface BiographyData {
   id: string;
@@ -9,6 +10,13 @@ interface BiographyData {
   title: string;
   location: string;
   shortBio: string;
+  profileImage?: {
+    url: string;
+    alt: string;
+    caption?: string;
+    sideText: string;
+    subText: string;
+  };
   biography: {
     introduction: string;
     careerJourney: string;
@@ -140,7 +148,7 @@ const Biography = () => {
         {/* Page title */}
         <h1 
           className={`
-            font-light text-3xl md:text-4xl lg:text-5xl tracking-[0.2em] uppercase mb-4
+            font-light text-3xl md:text-4xl lg:text-5xl tracking-[0.2em] uppercase mb-8
             opacity-0
             ${mounted ? 'animate-fade-in-up' : ''}
           `}
@@ -153,45 +161,83 @@ const Biography = () => {
         >
           Biography
         </h1>
-        
-        {/* Stage name and title */}
-        <div 
-          className={`
-            mb-8
-            opacity-0
-            ${mounted ? 'animate-fade-in-up' : ''}
-          `}
-          style={{ 
-            animationDelay: '180ms',
-            animationFillMode: 'forwards'
-          }}
-        >
-          <p className="text-xl md:text-2xl" style={{ color: 'var(--text-dim)' }}>
-            {data.stageName}
-          </p>
-          <p className="text-sm tracking-[0.2em] uppercase mt-1" style={{ color: 'var(--text-muted)' }}>
-            {data.title}
-          </p>
-        </div>
 
-        {/* Location */}
+        {/* Profile Section with Image and Text */}
         <div 
           className={`
-            flex items-center gap-2 mb-14
+            flex flex-col md:flex-row gap-8 md:gap-12 mb-12
             opacity-0
             ${mounted ? 'animate-fade-in-up' : ''}
           `}
           style={{ 
-            color: 'var(--text-muted)',
-            animationDelay: '220ms',
+            animationDelay: '140ms',
             animationFillMode: 'forwards'
           }}
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <span className="text-sm tracking-wide">{data.location}</span>
+          {/* Profile Image */}
+          {data.profileImage && (
+            <div className="md:w-1/3">
+              <div className="relative aspect-square w-full max-w-[280px] mx-auto md:mx-0 rounded-sm overflow-hidden group">
+                <Image
+                  src={data.profileImage.url}
+                  alt={data.profileImage.alt}
+                  fill
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  sizes="(max-width: 768px) 280px, 33vw"
+                />
+                {data.profileImage.caption && (
+                  <div 
+                    className="absolute bottom-0 left-0 right-0 py-2 px-3 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ 
+                      background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+                      color: 'var(--text-primary)'
+                    }}
+                  >
+                    {data.profileImage.caption}
+                  </div>
+                )}
+              </div>
+              
+              {/* Sub text below image */}
+              <p 
+                className="text-xs tracking-wide mt-3 text-center md:text-left"
+                style={{ color: 'var(--text-muted)' }}
+              >
+                {data.profileImage.subText}
+              </p>
+            </div>
+          )}
+
+          {/* Text next to image */}
+          <div className="md:w-2/3 flex flex-col justify-center">
+            {data.profileImage?.sideText && (
+              <p 
+                className="text-lg md:text-xl lg:text-2xl font-light italic leading-relaxed mb-4"
+                style={{ color: 'var(--text-dim)', borderLeft: '2px solid var(--accent)', paddingLeft: '1.5rem' }}
+              >
+                "{data.profileImage.sideText}"
+              </p>
+            )}
+
+            {/* Stage name and title - moved here for better flow */}
+            <div className="mt-2">
+              <p className="text-xl md:text-2xl" style={{ color: 'var(--text-dim)' }}>
+                {data.stageName}
+              </p>
+              <p className="text-sm tracking-[0.2em] uppercase mt-1" style={{ color: 'var(--text-muted)' }}>
+                {data.title}
+              </p>
+            </div>
+
+            {/* Location */}
+            <div className="flex items-center gap-2 mt-4">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--text-muted)' }}>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span className="text-sm tracking-wide" style={{ color: 'var(--text-muted)' }}>{data.location}</span>
+            </div>
+          </div>
         </div>
 
         {/* Divider */}
@@ -203,7 +249,7 @@ const Biography = () => {
           `}
           style={{ 
             backgroundColor: 'var(--border-subtle)',
-            animationDelay: '260ms',
+            animationDelay: '180ms',
             animationFillMode: 'forwards'
           }}
         />
@@ -220,7 +266,7 @@ const Biography = () => {
             border: '1px solid var(--border-subtle)',
             borderRadius: '2px',
             backgroundColor: 'var(--bg-header)',
-            animationDelay: '300ms',
+            animationDelay: '220ms',
             animationFillMode: 'forwards'
           }}
         >
@@ -238,7 +284,7 @@ const Biography = () => {
               ${mounted ? 'animate-fade-in-up' : ''}
             `}
             style={{ 
-              animationDelay: '340ms',
+              animationDelay: '260ms',
               animationFillMode: 'forwards'
             }}
           >
@@ -260,7 +306,7 @@ const Biography = () => {
               ${mounted ? 'animate-fade-in-up' : ''}
             `}
             style={{ 
-              animationDelay: '380ms',
+              animationDelay: '300ms',
               animationFillMode: 'forwards'
             }}
           >
@@ -282,7 +328,7 @@ const Biography = () => {
               ${mounted ? 'animate-fade-in-up' : ''}
             `}
             style={{ 
-              animationDelay: '420ms',
+              animationDelay: '340ms',
               animationFillMode: 'forwards'
             }}
           >
@@ -304,7 +350,7 @@ const Biography = () => {
               ${mounted ? 'animate-fade-in-up' : ''}
             `}
             style={{ 
-              animationDelay: '460ms',
+              animationDelay: '380ms',
               animationFillMode: 'forwards'
             }}
           >
@@ -326,7 +372,7 @@ const Biography = () => {
               ${mounted ? 'animate-fade-in-up' : ''}
             `}
             style={{ 
-              animationDelay: '500ms',
+              animationDelay: '420ms',
               animationFillMode: 'forwards'
             }}
           >
@@ -359,7 +405,7 @@ const Biography = () => {
               ${mounted ? 'animate-fade-in-up' : ''}
             `}
             style={{ 
-              animationDelay: '540ms',
+              animationDelay: '460ms',
               animationFillMode: 'forwards'
             }}
           >
@@ -393,7 +439,7 @@ const Biography = () => {
               ${mounted ? 'animate-fade-in-up' : ''}
             `}
             style={{ 
-              animationDelay: '580ms',
+              animationDelay: '500ms',
               animationFillMode: 'forwards'
             }}
           >
@@ -427,7 +473,7 @@ const Biography = () => {
               ${mounted ? 'animate-fade-in-up' : ''}
             `}
             style={{ 
-              animationDelay: '620ms',
+              animationDelay: '540ms',
               animationFillMode: 'forwards'
             }}
           >
@@ -457,7 +503,7 @@ const Biography = () => {
           `}
           style={{ 
             borderTop: '1px solid var(--border-subtle)',
-            animationDelay: '660ms',
+            animationDelay: '580ms',
             animationFillMode: 'forwards'
           }}
         >
@@ -492,7 +538,7 @@ const Biography = () => {
             ${mounted ? 'animate-fade-in-up' : ''}
           `}
           style={{ 
-            animationDelay: '700ms',
+            animationDelay: '620ms',
             animationFillMode: 'forwards'
           }}
         >
@@ -519,7 +565,7 @@ const Biography = () => {
           `}
           style={{ 
             color: 'var(--text-dim)',
-            animationDelay: '740ms',
+            animationDelay: '660ms',
             animationFillMode: 'forwards'
           }}
         >

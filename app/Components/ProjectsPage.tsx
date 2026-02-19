@@ -154,21 +154,39 @@ const ProjectsPage = () => {
           Projects
         </h1>
         
-        {/* Subtitle */}
-        <p 
-          className={`
-            text-left mb-8 max-w-2xl
-            opacity-0
-            ${mounted ? 'animate-fade-in-up' : ''}
-          `}
-          style={{ 
-            color: 'var(--text-muted)',
-            animationDelay: '180ms',
-            animationFillMode: 'forwards'
-          }}
-        >
-          A collection of my work in film, library, and commercial music
-        </p>
+        {/* Static Header Image with Side Text */}
+        <div className="mb-8 md:mb-10 opacity-0 animate-fade-in-up" style={{ animationDelay: '150ms', animationFillMode: 'forwards' }}>
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8 lg:gap-10">
+            {/* Image Container - 2/3 width on desktop */}
+            <div className="w-full md:w-2/3">
+              <div className="relative w-full h-[200px] sm:h-[250px] md:h-[280px] lg:h-[320px] rounded-lg md:rounded-xl overflow-hidden shadow-xl md:shadow-2xl">
+                <Image
+                  src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1200&q=80"
+                  alt="Studio workspace with mixing console and monitors"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 66vw, 800px"
+                />
+              </div>
+              {/* SubText - Below image on all screens */}
+              <div className="mt-3 md:mt-4">
+                <p className="text-xs sm:text-sm md:text-base" style={{ color: 'var(--text-muted)' }}>
+                  A curated collection of sound design and music composition projects
+                </p>
+              </div>
+            </div>
+            
+            {/* Side Text Container - 1/3 width on desktop */}
+            <div className="w-full md:w-1/3 flex flex-col justify-center">
+              <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light leading-relaxed" style={{ color: 'var(--accent)' }}>
+                Crafting sonic identities for visual stories
+              </p>
+              <p className="text-[10px] sm:text-xs mt-2 md:mt-3 tracking-wider uppercase" style={{ color: 'var(--text-dim)' }}>
+                Featured works from 2023-2024
+              </p>
+            </div>
+          </div>
+        </div>
 
         {/* Category filter */}
         <div 
@@ -178,7 +196,7 @@ const ProjectsPage = () => {
             ${mounted ? 'animate-fade-in-up' : ''}
           `}
           style={{ 
-            animationDelay: '260ms',
+            animationDelay: '220ms',
             animationFillMode: 'forwards'
           }}
         >
@@ -216,7 +234,7 @@ const ProjectsPage = () => {
           `}
           style={{ 
             backgroundColor: 'var(--border-subtle)',
-            animationDelay: '340ms',
+            animationDelay: '280ms',
             animationFillMode: 'forwards'
           }}
         />
@@ -238,7 +256,7 @@ const ProjectsPage = () => {
               href={`/projects/${project.slug}`}
               className={`group block opacity-0 ${mounted ? 'animate-fade-in-up' : ''}`}
               style={{ 
-                animationDelay: `${400 + index * 80}ms`,
+                animationDelay: `${340 + index * 80}ms`,
                 animationFillMode: 'forwards'
               }}
             >

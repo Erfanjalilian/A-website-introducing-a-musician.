@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { PlayIcon, FilmIcon } from '@heroicons/react/24/solid';
+import Image from 'next/image';
 
 interface PortfolioMedia {
   type: 'video' | 'audio';
@@ -13,6 +14,13 @@ interface PortfolioProject {
   projectTitle: string;
   shortDescription: string;
   media: PortfolioMedia;
+  projectImage?: {
+    url: string;
+    alt: string;
+    caption: string;
+    sideText: string;
+    subText: string;
+  };
 }
 
 interface PortfolioSection {
@@ -20,12 +28,28 @@ interface PortfolioSection {
   title: string;
   description: string;
   projects: PortfolioProject[];
+  sectionImage?: {
+    url: string;
+    alt: string;
+    caption: string;
+    sideText: string;
+    subText: string;
+  };
+}
+
+interface HeaderImage {
+  url: string;
+  alt: string;
+  caption: string;
+  sideText: string;
+  subText: string;
 }
 
 interface PortfolioData {
   id: string;
   pageTitle: string;
   description: string;
+  headerImage: HeaderImage;
   sections: PortfolioSection[];
   lastUpdated: string;
 }
@@ -125,21 +149,63 @@ const PortfolioPage = () => {
       <div className="absolute bottom-0 right-1/4 w-48 md:w-96 h-48 md:h-96 rounded-full blur-3xl translate-y-1/2 pointer-events-none animate-fade-in" style={{ backgroundColor: 'rgba(201, 169, 98, 0.05)', animationDelay: '300ms', animationFillMode: 'forwards' }} />
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-10 relative z-10">
-        {/* Header Section - Fixed for mobile */}
+        {/* Header Section */}
         <div className="mb-12 md:mb-16 lg:mb-24">
           <div className="inline-block mb-4 md:mb-6 px-3 md:px-4 py-1.5 md:py-2 rounded-full opacity-0 animate-fade-in-up" style={{ backgroundColor: 'rgba(201, 169, 98, 0.1)', borderColor: 'rgba(201, 169, 98, 0.3)', borderWidth: '1px', animationDelay: '100ms', animationFillMode: 'forwards' }}>
             <p className="text-[10px] md:text-xs tracking-widest uppercase font-medium" style={{ color: 'rgba(201, 169, 98, 0.8)' }}>Portfolio</p>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-light tracking-tight mb-4 md:mb-6 leading-tight opacity-0 animate-fade-in-up" style={{ color: '#f5f2ed', animationDelay: '150ms', animationFillMode: 'forwards' }}>
+          
+          {/* Title */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-light tracking-tight mb-8 md:mb-10 leading-tight opacity-0 animate-fade-in-up" style={{ color: '#f5f2ed', animationDelay: '150ms', animationFillMode: 'forwards' }}>
             {data.pageTitle}
           </h1>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl max-w-3xl leading-relaxed font-light opacity-0 animate-fade-in-up" style={{ color: '#9a9590', animationDelay: '200ms', animationFillMode: 'forwards' }}>{data.description}</p>
+          
+          {/* Header Image with Side Text */}
+          {data.headerImage && (
+            <div className="mb-8 md:mb-10 opacity-0 animate-fade-in-up" style={{ animationDelay: '175ms', animationFillMode: 'forwards' }}>
+              <div className="flex flex-col md:flex-row gap-6 md:gap-8 lg:gap-10">
+                {/* Image Container - 2/3 width on desktop */}
+                <div className="w-full md:w-2/3">
+                  <div className="relative w-full h-[200px] sm:h-[250px] md:h-[280px] lg:h-[320px] rounded-lg md:rounded-xl overflow-hidden shadow-xl md:shadow-2xl">
+                    <Image
+                      src={data.headerImage.url}
+                      alt={data.headerImage.alt}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 66vw, 800px"
+                    />
+                  </div>
+                  {/* SubText - Below image on all screens */}
+                  <div className="mt-3 md:mt-4">
+                    <p className="text-xs sm:text-sm md:text-base" style={{ color: '#9a9590' }}>
+                      {data.headerImage.subText}
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Side Text Container - 1/3 width on desktop */}
+                <div className="w-full md:w-1/3 flex flex-col justify-center">
+                  <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light leading-relaxed" style={{ color: '#c9a962' }}>
+                    {data.headerImage.sideText}
+                  </p>
+                  <p className="text-[10px] sm:text-xs mt-2 md:mt-3 tracking-wider uppercase" style={{ color: '#6b6662' }}>
+                    {data.headerImage.caption}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {/* Description */}
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl max-w-3xl leading-relaxed font-light opacity-0 animate-fade-in-up" style={{ color: '#9a9590', animationDelay: '200ms', animationFillMode: 'forwards' }}>
+            {data.description}
+          </p>
         </div>
 
         <div className="space-y-16 md:space-y-20 lg:space-y-24">
           {data.sections.map((section, sIdx) => (
             <section key={section.id} className="relative opacity-0 animate-fade-in-up" style={{ animationDelay: `${250 + sIdx * 100}ms`, animationFillMode: 'forwards' }}>
-              {/* Section Header - Fixed for mobile */}
+              {/* Section Header */}
               <div className="mb-8 md:mb-10 lg:mb-14 relative">
                 <div className="flex items-center gap-3 md:gap-4 mb-2 md:mb-4">
                   <div className="h-0.5 md:h-1 w-8 md:w-12 rounded bg-gradient-to-r from-[#c9a962] to-[#c9a962]/50 transform origin-left" style={{ background: '#c9a962', animation: `scale-x 0.6s ease-out ${'300 + sIdx * 100'}ms forwards`, transformOrigin: 'left' }} />
@@ -148,7 +214,7 @@ const PortfolioPage = () => {
                 <p className="text-xs sm:text-sm md:text-base lg:text-lg max-w-2xl leading-relaxed ml-8 md:ml-16" style={{ color: '#6b6662' }}>{section.description}</p>
               </div>
 
-              {/* Projects Grid - Improved for mobile */}
+              {/* Projects Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-10">
                 {section.projects.map((project, pIdx) => (
                   <article key={project.id} className="group relative h-full opacity-0 animate-fade-in-up" style={{ animationDelay: `${300 + sIdx * 100 + pIdx * 80}ms`, animationFillMode: 'forwards' }}>
@@ -177,7 +243,7 @@ const PortfolioPage = () => {
                       )}
                     </div>
                     
-                    {/* Project Info - Improved for mobile */}
+                    {/* Project Info */}
                     <div className="mt-4 md:mt-6 relative">
                       <h3 className="text-lg md:text-xl lg:text-2xl font-light mb-1 md:mb-2 group-hover:opacity-80 transition-all duration-300" style={{ color: '#f5f2ed' }}>{project.projectTitle}</h3>
                       <p className="text-xs sm:text-sm md:text-base leading-relaxed" style={{ color: '#9a9590' }}>{project.shortDescription}</p>
@@ -190,7 +256,7 @@ const PortfolioPage = () => {
           ))}
         </div>
 
-        {/* Footer - Fixed for mobile */}
+        {/* Footer */}
         <div className="mt-16 md:mt-20 lg:mt-24 pt-8 md:pt-12 opacity-0 animate-fade-in" style={{ borderTopColor: 'rgba(201, 169, 98, 0.15)', borderTopWidth: '1px', animationDelay: '500ms', animationFillMode: 'forwards' }}>
           <p className="text-[10px] md:text-xs uppercase tracking-widest" style={{ color: '#6b6662' }}>
             Last updated: {new Date(data.lastUpdated).toLocaleDateString('en-US', {
