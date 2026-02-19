@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { PlayIcon } from '@heroicons/react/24/solid';
 
 interface Project {
   id: string;
@@ -13,6 +14,7 @@ interface Project {
   year: string;
   client?: string;
   featured: boolean;
+  videoUrl?: string;
 }
 
 const getCategoryName = (category: string): string => {
@@ -30,6 +32,7 @@ const ProjectsPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [mounted, setMounted] = useState(false);
+  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -84,7 +87,7 @@ const ProjectsPage = () => {
           </h1>
           <div className="flex justify-center items-center h-64">
             <div 
-              className="animate-spin rounded-full h-10 w-10 border-2 border-transparent"
+              className="animate-spin rounded-full h-10 w-10 border-2 border-transparent animate-pulse-scale"
               style={{ borderTopColor: 'var(--accent)', borderRightColor: 'var(--accent)' }}
             />
           </div>
@@ -128,7 +131,7 @@ const ProjectsPage = () => {
     >
       {/* Accent line */}
       <div 
-        className="absolute top-0 left-0 right-0 h-px opacity-30"
+        className="absolute top-0 left-0 right-0 h-px opacity-30 animate-border-glow"
         style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
       />
 
@@ -247,24 +250,51 @@ const ProjectsPage = () => {
                   borderRadius: '2px'
                 }}
               >
-                {/* Image */}
+                {/* Image / Video */}
                 <div className="relative w-full aspect-[4/3] overflow-hidden">
-                  <Image
-                    src={project.coverImage}
-                    alt={project.title}
-                    fill
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  
-                  {/* Hover overlay */}
-                  <div 
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 
-                               transition-opacity duration-400"
-                    style={{ 
-                      background: 'linear-gradient(to top, rgba(20,18,18,0.6) 0%, transparent 50%)'
-                    }}
-                  />
+                  {playingVideoId === project.id && project.videoUrl ? (
+                    <video
+                      src={project.videoUrl}
+                      controls
+                      autoPlay
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <>
+                      <Image
+                        src={project.coverImage}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                      
+                      {/* Hover overlay */}
+                      <div 
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 
+                                   transition-opacity duration-400"
+                        style={{ 
+                          background: 'linear-gradient(to top, rgba(20,18,18,0.6) 0%, transparent 50%)'
+                        }}
+                      />
+                      
+                      {/* Play button overlay - only show if video exists */}
+                      {project.videoUrl && (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setPlayingVideoId(project.id);
+                          }}
+                          className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-full h-full"
+                          aria-label={`Play video for ${project.title}`}
+                        >
+                          <div className="flex items-center justify-center w-16 h-16 rounded-full transition-transform duration-300 group-hover:scale-110 group-hover:animate-pulse-scale" style={{ backgroundColor: 'rgba(201, 169, 98, 0.95)' }}>
+                            <PlayIcon className="w-8 h-8 ml-1" style={{ color: 'var(--bg-body)' }} />
+                          </div>
+                        </button>
+                      )}
+                    </>
+                  )}
                   
                   {/* Badges */}
                   <div className="absolute top-3 left-3 flex flex-wrap gap-2">
