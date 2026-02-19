@@ -27,10 +27,7 @@ const Header = () => {
         console.log(data);
         setApiPages(data);
         
-        // You might want to set the latest title from one of the pages?
-        // If you want to use the most recent page's title:
         if (data.length > 0) {
-          // Sort by createdAt and get the most recent
           const sorted = [...data].sort((a, b) => 
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
           );
@@ -68,13 +65,12 @@ const Header = () => {
     };
   }, [menuOpen]);
 
-  // Combine static and API pages for display
   const allNavLinks = [
     ...pageLinks,
     ...apiPages.map(page => ({
       id: page.id,
       title: page.title,
-      href: `/${page.slug}` // Adjust this based on your routing structure
+      href: `/${page.slug}`
     }))
   ];
 
@@ -125,7 +121,13 @@ const Header = () => {
       {/* Mobile */}
       <div className="md:hidden">
         <div className="flex flex-col items-center justify-start px-5 pt-6 pb-4 relative">
-          <button onClick={() => setMenuOpen(!menuOpen)} className="absolute top-5 left-5 z-20 p-2" style={{ color: 'var(--text-muted)' }} aria-expanded={menuOpen} aria-label={menuOpen ? 'Close menu' : 'Open menu'}>
+          <button 
+            onClick={() => setMenuOpen(!menuOpen)} 
+            className="absolute top-5 left-5 z-50 p-2 rounded-lg hover:bg-white/5 transition-colors duration-200" 
+            style={{ color: 'var(--text-muted)' }} 
+            aria-expanded={menuOpen} 
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          >
             {menuOpen ? <XMarkIcon className="w-8 h-8" strokeWidth={1.5} /> : <Bars3Icon className="w-8 h-8" strokeWidth={1.5} />}
           </button>
 
@@ -141,21 +143,82 @@ const Header = () => {
           )}
         </div>
 
-        {/* Mobile Menu Dropdown */}
+        {/* Mobile Menu Dropdown - Fixed with proper background */}
         {menuOpen && (
-          <div className="fixed inset-0 z-10 bg-black/95 pt-20 px-5 animate-menu-slide-in">
-            <div className="flex flex-col space-y-4">
+          <div 
+            className="fixed inset-0 z-40 pt-20 px-5 overflow-y-auto"
+            style={{ 
+              backgroundColor: 'var(--bg-header, #1a1616)',
+              backgroundImage: 'linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(26,22,22,0.98))',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)'
+            }}
+          >
+            {/* Decorative accent line at the top */}
+            <div className="absolute top-0 left-0 right-0 h-px opacity-30" style={{ background: 'linear-gradient(90deg, transparent, var(--accent, #c9a962), transparent)' }} />
+            
+            {/* Menu items container */}
+            <div className="flex flex-col space-y-6 max-w-sm mx-auto">
               {allNavLinks.map((link, idx) => (
                 <Link
                   key={link.id}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="text-xl tracking-[0.15em] uppercase text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors duration-300 py-2 animate-link-slide-in"
-                  style={{ animationDelay: `${idx * 60}ms` }}
+                  className="group relative text-xl tracking-[0.15em] uppercase transition-all duration-300 py-3 px-4 rounded-lg hover:pl-6"
+                  style={{ 
+                    color: 'var(--text-muted, #9a9590)',
+                    animationDelay: `${idx * 60}ms`,
+                  }}
                 >
-                  {link.title}
+                  {/* Hover background effect */}
+                  <span className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: 'rgba(201, 169, 98, 0.1)' }} />
+                  
+                  {/* Decorative left border on hover */}
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 group-hover:w-1 group-hover:h-6 transition-all duration-300" style={{ backgroundColor: 'var(--accent, #c9a962)' }} />
+                  
+                  {/* Menu item text */}
+                  <span className="relative z-10 block text-center md:text-left">
+                    {link.title}
+                  </span>
                 </Link>
               ))}
+              
+              {/* Social icons for mobile menu */}
+              <div className="flex flex-wrap justify-center gap-4 pt-8 mt-4 border-t" style={{ borderColor: 'rgba(201, 169, 98, 0.2)' }}>
+                {socialIcons.map((social) => {
+                  const Icon = social.icon;
+                  return (
+                    <a 
+                      key={social.id} 
+                      href={social.href} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="p-3 rounded-full hover:scale-110 transition-all duration-300" 
+                      style={{ 
+                        backgroundColor: 'rgba(255,255,255,0.05)',
+                        color: 'var(--text-muted, #9a9590)'
+                      }}
+                      aria-label={social.label}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      <Icon className="w-5 h-5" />
+                    </a>
+                  );
+                })}
+              </div>
+              
+              {/* Close button at bottom */}
+              <button
+                onClick={() => setMenuOpen(false)}
+                className="mt-6 py-3 px-6 rounded-lg text-sm tracking-widest uppercase transition-all duration-300 hover:scale-105"
+                style={{ 
+                  backgroundColor: 'rgba(201, 169, 98, 0.1)',
+                  color: 'var(--accent, #c9a962)',
+                  border: '1px solid rgba(201, 169, 98, 0.3)'
+                }}
+              >
+                Close Menu
+              </button>
             </div>
           </div>
         )}

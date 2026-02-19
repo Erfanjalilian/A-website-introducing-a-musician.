@@ -119,40 +119,40 @@ const PortfolioPage = () => {
   if (!data) return null;
 
   return (
-    <div className="min-h-screen py-20 md:py-32 relative overflow-hidden" style={{ backgroundColor: '#1a1616' }}>
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full blur-3xl -translate-y-1/2 pointer-events-none animate-fade-in" style={{ backgroundColor: 'rgba(201, 169, 98, 0.05)', animationDelay: '200ms', animationFillMode: 'forwards' }} />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full blur-3xl translate-y-1/2 pointer-events-none animate-fade-in" style={{ backgroundColor: 'rgba(201, 169, 98, 0.05)', animationDelay: '300ms', animationFillMode: 'forwards' }} />
+    <div className="min-h-screen py-16 md:py-20 lg:py-32 relative overflow-hidden" style={{ backgroundColor: '#1a1616' }}>
+      {/* Decorative elements - adjusted for mobile */}
+      <div className="absolute top-0 left-1/4 w-48 md:w-96 h-48 md:h-96 rounded-full blur-3xl -translate-y-1/2 pointer-events-none animate-fade-in" style={{ backgroundColor: 'rgba(201, 169, 98, 0.05)', animationDelay: '200ms', animationFillMode: 'forwards' }} />
+      <div className="absolute bottom-0 right-1/4 w-48 md:w-96 h-48 md:h-96 rounded-full blur-3xl translate-y-1/2 pointer-events-none animate-fade-in" style={{ backgroundColor: 'rgba(201, 169, 98, 0.05)', animationDelay: '300ms', animationFillMode: 'forwards' }} />
       
-      <div className="max-w-6xl mx-auto px-6 md:px-10 relative z-10">
-        {/* Header Section */}
-        <div className="mb-16 md:mb-24">
-          <div className="inline-block mb-6 px-4 py-2 rounded-full opacity-0 animate-fade-in-up" style={{ backgroundColor: 'rgba(201, 169, 98, 0.1)', borderColor: 'rgba(201, 169, 98, 0.3)', borderWidth: '1px', animationDelay: '100ms', animationFillMode: 'forwards' }}>
-            <p className="text-xs tracking-widest uppercase font-medium" style={{ color: 'rgba(201, 169, 98, 0.8)' }}>Portfolio</p>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-10 relative z-10">
+        {/* Header Section - Fixed for mobile */}
+        <div className="mb-12 md:mb-16 lg:mb-24">
+          <div className="inline-block mb-4 md:mb-6 px-3 md:px-4 py-1.5 md:py-2 rounded-full opacity-0 animate-fade-in-up" style={{ backgroundColor: 'rgba(201, 169, 98, 0.1)', borderColor: 'rgba(201, 169, 98, 0.3)', borderWidth: '1px', animationDelay: '100ms', animationFillMode: 'forwards' }}>
+            <p className="text-[10px] md:text-xs tracking-widest uppercase font-medium" style={{ color: 'rgba(201, 169, 98, 0.8)' }}>Portfolio</p>
           </div>
-          <h1 className="text-5xl md:text-7xl font-light tracking-tight mb-6 leading-tight opacity-0 animate-fade-in-up" style={{ color: '#f5f2ed', animationDelay: '150ms', animationFillMode: 'forwards' }}>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-light tracking-tight mb-4 md:mb-6 leading-tight opacity-0 animate-fade-in-up" style={{ color: '#f5f2ed', animationDelay: '150ms', animationFillMode: 'forwards' }}>
             {data.pageTitle}
           </h1>
-          <p className="text-lg md:text-xl max-w-3xl leading-relaxed font-light opacity-0 animate-fade-in-up" style={{ color: '#9a9590', animationDelay: '200ms', animationFillMode: 'forwards' }}>{data.description}</p>
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl max-w-3xl leading-relaxed font-light opacity-0 animate-fade-in-up" style={{ color: '#9a9590', animationDelay: '200ms', animationFillMode: 'forwards' }}>{data.description}</p>
         </div>
 
-        <div className="space-y-24">
+        <div className="space-y-16 md:space-y-20 lg:space-y-24">
           {data.sections.map((section, sIdx) => (
             <section key={section.id} className="relative opacity-0 animate-fade-in-up" style={{ animationDelay: `${250 + sIdx * 100}ms`, animationFillMode: 'forwards' }}>
-              {/* Section Header */}
-              <div className="mb-14 relative">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="h-1 w-12 rounded bg-gradient-to-r from-[#c9a962] to-[#c9a962]/50 transform origin-left" style={{ background: '#c9a962', animation: `scale-x 0.6s ease-out ${'300 + sIdx * 100'}ms forwards`, transformOrigin: 'left' }} />
-                  <h2 className="text-xl md:text-2xl tracking-wide uppercase font-light" style={{ color: '#c9a962' }}>{section.title}</h2>
+              {/* Section Header - Fixed for mobile */}
+              <div className="mb-8 md:mb-10 lg:mb-14 relative">
+                <div className="flex items-center gap-3 md:gap-4 mb-2 md:mb-4">
+                  <div className="h-0.5 md:h-1 w-8 md:w-12 rounded bg-gradient-to-r from-[#c9a962] to-[#c9a962]/50 transform origin-left" style={{ background: '#c9a962', animation: `scale-x 0.6s ease-out ${'300 + sIdx * 100'}ms forwards`, transformOrigin: 'left' }} />
+                  <h2 className="text-base md:text-lg lg:text-2xl tracking-wide uppercase font-light" style={{ color: '#c9a962' }}>{section.title}</h2>
                 </div>
-                <p className="text-base md:text-lg max-w-2xl leading-relaxed ml-16" style={{ color: '#6b6662' }}>{section.description}</p>
+                <p className="text-xs sm:text-sm md:text-base lg:text-lg max-w-2xl leading-relaxed ml-8 md:ml-16" style={{ color: '#6b6662' }}>{section.description}</p>
               </div>
 
-              {/* Projects Grid */}
-              <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
+              {/* Projects Grid - Improved for mobile */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-10">
                 {section.projects.map((project, pIdx) => (
                   <article key={project.id} className="group relative h-full opacity-0 animate-fade-in-up" style={{ animationDelay: `${300 + sIdx * 100 + pIdx * 80}ms`, animationFillMode: 'forwards' }}>
-                    <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl transition-all duration-500 ease-out group-hover:shadow-[0_0_50px_rgba(201,169,98,0.2)]">
+                    <div className="relative w-full aspect-video rounded-lg md:rounded-xl overflow-hidden shadow-xl md:shadow-2xl transition-all duration-500 ease-out group-hover:shadow-[0_0_50px_rgba(201,169,98,0.2)]">
                       {activeMedia[project.id] ? (
                         <iframe
                           src={getEmbedUrl(project.media.url, project.media.type)}
@@ -165,23 +165,23 @@ const PortfolioPage = () => {
                              style={{ backgroundColor: '#0f0d0b' }}
                              onClick={() => toggleMedia(project.id)}>
                           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ backgroundImage: 'linear-gradient(to top, rgba(0,0,0,0.4), transparent)' }} />
-                          <div className="relative z-10 flex flex-col items-center gap-4">
+                          <div className="relative z-10 flex flex-col items-center gap-2 md:gap-4">
                             {project.media.type === 'video' ? (
-                              <FilmIcon className="w-14 h-14 opacity-60 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110 group-hover:animate-pulse-scale" style={{ color: '#c9a962' }} />
+                              <FilmIcon className="w-10 h-10 md:w-14 md:h-14 opacity-60 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110 group-hover:animate-pulse-scale" style={{ color: '#c9a962' }} />
                             ) : (
-                              <PlayIcon className="w-14 h-14 opacity-60 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110 group-hover:animate-pulse-scale" style={{ color: '#c9a962' }} />
+                              <PlayIcon className="w-10 h-10 md:w-14 md:h-14 opacity-60 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110 group-hover:animate-pulse-scale" style={{ color: '#c9a962' }} />
                             )}
-                            <span className="text-xs uppercase tracking-widest opacity-70 group-hover:opacity-100 transition-all duration-500" style={{ color: '#c9a962' }}>Play {project.media.type}</span>
+                            <span className="text-[10px] md:text-xs uppercase tracking-widest opacity-70 group-hover:opacity-100 transition-all duration-500" style={{ color: '#c9a962' }}>Play {project.media.type}</span>
                           </div>
                         </div>
                       )}
                     </div>
                     
-                    {/* Project Info */}
-                    <div className="mt-6 relative">
-                      <h3 className="text-xl md:text-2xl font-light mb-2 group-hover:opacity-80 transition-all duration-300" style={{ color: '#f5f2ed' }}>{project.projectTitle}</h3>
-                      <p className="text-sm md:text-base leading-relaxed" style={{ color: '#9a9590' }}>{project.shortDescription}</p>
-                      <div className="absolute -left-4 top-0 w-1 h-0 group-hover:h-12 transition-all duration-500" style={{ backgroundColor: '#c9a962' }} />
+                    {/* Project Info - Improved for mobile */}
+                    <div className="mt-4 md:mt-6 relative">
+                      <h3 className="text-lg md:text-xl lg:text-2xl font-light mb-1 md:mb-2 group-hover:opacity-80 transition-all duration-300" style={{ color: '#f5f2ed' }}>{project.projectTitle}</h3>
+                      <p className="text-xs sm:text-sm md:text-base leading-relaxed" style={{ color: '#9a9590' }}>{project.shortDescription}</p>
+                      <div className="absolute -left-3 md:-left-4 top-0 w-0.5 md:w-1 h-0 group-hover:h-8 md:group-hover:h-12 transition-all duration-500" style={{ backgroundColor: '#c9a962' }} />
                     </div>
                   </article>
                 ))}
@@ -190,9 +190,9 @@ const PortfolioPage = () => {
           ))}
         </div>
 
-        {/* Footer */}
-        <div className="mt-24 pt-12 opacity-0 animate-fade-in" style={{ borderTopColor: 'rgba(201, 169, 98, 0.15)', borderTopWidth: '1px', animationDelay: '500ms', animationFillMode: 'forwards' }}>
-          <p className="text-xs uppercase tracking-widest" style={{ color: '#6b6662' }}>
+        {/* Footer - Fixed for mobile */}
+        <div className="mt-16 md:mt-20 lg:mt-24 pt-8 md:pt-12 opacity-0 animate-fade-in" style={{ borderTopColor: 'rgba(201, 169, 98, 0.15)', borderTopWidth: '1px', animationDelay: '500ms', animationFillMode: 'forwards' }}>
+          <p className="text-[10px] md:text-xs uppercase tracking-widest" style={{ color: '#6b6662' }}>
             Last updated: {new Date(data.lastUpdated).toLocaleDateString('en-US', {
               year: 'numeric', month: 'long', day: 'numeric'
             })}
