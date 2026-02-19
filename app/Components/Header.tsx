@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FaLinkedinIn, FaSoundcloud, FaInstagram, FaVimeoV } from 'react-icons/fa';
-import { SiSpotify, SiApplemusic } from 'react-icons/si';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 type Page = {
@@ -46,15 +44,6 @@ const Header = () => {
     { id: 1, title: 'Projects', href: '/Projects' },
     { id: 3, title: 'Biography', href: '/LibraryMusic' },
     { id: 4, title: 'Portfolio Page', href: '/CommercialMusic' },
-  ];
-
-  const socialIcons = [
-    { id: 1, icon: FaLinkedinIn, href: 'https://linkedin.com', label: 'LinkedIn' },
-    { id: 2, icon: FaSoundcloud, href: 'https://soundcloud.com', label: 'SoundCloud' },
-    { id: 3, icon: SiSpotify, href: 'https://spotify.com', label: 'Spotify' },
-    { id: 4, icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram' },
-    { id: 5, icon: SiApplemusic, href: 'https://music.apple.com', label: 'Apple Music' },
-    { id: 6, icon: FaVimeoV, href: 'https://vimeo.com', label: 'Vimeo' },
   ];
 
   useEffect(() => {
@@ -104,15 +93,8 @@ const Header = () => {
               </h2>
             </div>
 
-            <div className="col-span-3 flex items-center justify-end gap-5">
-              {socialIcons.map((social, idx) => {
-                const Icon = social.icon;
-                return (
-                  <a key={social.id} href={social.href} target="_blank" rel="noopener noreferrer" className="p-2 rounded-full hover:scale-110 hover:bg-white/5 transition-all duration-300 animate-fade-in-up animate-icon-hover" style={{ animationDelay: `${300 + idx * 50}ms` }} aria-label={social.label}>
-                    <Icon className="w-5 h-5" />
-                  </a>
-                );
-              })}
+            <div className="col-span-3">
+              {/* Empty div to maintain grid layout */}
             </div>
           </div>
         </div>
@@ -143,7 +125,7 @@ const Header = () => {
           )}
         </div>
 
-        {/* Mobile Menu Dropdown - Fixed with proper background */}
+        {/* Mobile Menu Dropdown */}
         {menuOpen && (
           <div 
             className="fixed inset-0 z-40 pt-20 px-5 overflow-y-auto"
@@ -183,34 +165,10 @@ const Header = () => {
                 </Link>
               ))}
               
-              {/* Social icons for mobile menu */}
-              <div className="flex flex-wrap justify-center gap-4 pt-8 mt-4 border-t" style={{ borderColor: 'rgba(201, 169, 98, 0.2)' }}>
-                {socialIcons.map((social) => {
-                  const Icon = social.icon;
-                  return (
-                    <a 
-                      key={social.id} 
-                      href={social.href} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="p-3 rounded-full hover:scale-110 transition-all duration-300" 
-                      style={{ 
-                        backgroundColor: 'rgba(255,255,255,0.05)',
-                        color: 'var(--text-muted, #9a9590)'
-                      }}
-                      aria-label={social.label}
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      <Icon className="w-5 h-5" />
-                    </a>
-                  );
-                })}
-              </div>
-              
               {/* Close button at bottom */}
               <button
                 onClick={() => setMenuOpen(false)}
-                className="mt-6 py-3 px-6 rounded-lg text-sm tracking-widest uppercase transition-all duration-300 hover:scale-105"
+                className="mt-8 py-3 px-6 rounded-lg text-sm tracking-widest uppercase transition-all duration-300 hover:scale-105"
                 style={{ 
                   backgroundColor: 'rgba(201, 169, 98, 0.1)',
                   color: 'var(--accent, #c9a962)',
