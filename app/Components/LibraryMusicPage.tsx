@@ -85,7 +85,7 @@ const Biography = () => {
           </h1>
           <div className="flex justify-center items-center h-64">
             <div 
-              className="animate-spin rounded-full h-10 w-10 border-2 border-transparent"
+              className="animate-spin rounded-full h-10 w-10 border-2 border-transparent animate-pulse-scale"
               style={{ borderTopColor: 'var(--accent)', borderRightColor: 'var(--accent)' }}
             />
           </div>
@@ -131,7 +131,7 @@ const Biography = () => {
     >
       {/* Accent line */}
       <div 
-        className="absolute top-0 left-0 right-0 h-px opacity-30"
+        className="absolute top-0 left-0 right-0 h-px opacity-30 animate-border-glow"
         style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
       />
 
@@ -211,7 +211,8 @@ const Biography = () => {
         {/* Short Bio - Featured quote */}
         <div 
           className={`
-            mb-16 p-8
+            mb-16 p-8 transition-all duration-500 ease-out
+            hover:shadow-[0_0_30px_rgba(201,169,98,0.1)] hover:border-[var(--accent)]
             opacity-0
             ${mounted ? 'animate-fade-in-up' : ''}
           `}
@@ -339,7 +340,7 @@ const Biography = () => {
               {data.biography.areasOfActivity.map((activity, index) => (
                 <div 
                   key={index}
-                  className="px-4 py-2 text-sm"
+                  className="px-4 py-2 text-sm transition-all duration-300 ease-out hover:bg-white/5 hover:border-[var(--accent)] cursor-default"
                   style={{ 
                     border: '1px solid var(--border-subtle)',
                     color: 'var(--text-muted)'
@@ -372,7 +373,7 @@ const Biography = () => {
               {data.skills.map((skill, index) => (
                 <span 
                   key={index}
-                  className="px-4 py-1.5 text-sm"
+                  className="px-4 py-1.5 text-sm transition-all duration-300 ease-out hover:bg-white/5 hover:border-[var(--accent)] cursor-default"
                   style={{ 
                     backgroundColor: 'var(--bg-header)',
                     border: '1px solid var(--border-subtle)',
@@ -406,7 +407,7 @@ const Biography = () => {
               {data.availableFor.map((item, index) => (
                 <span 
                   key={index}
-                  className="px-4 py-1.5 text-sm"
+                  className="px-4 py-1.5 text-sm transition-all duration-300 ease-out hover:bg-white/5 hover:border-[var(--accent)] cursor-default"
                   style={{ 
                     backgroundColor: 'var(--bg-header)',
                     border: '1px solid var(--border-subtle)',
@@ -431,7 +432,7 @@ const Biography = () => {
             }}
           >
             <div 
-              className="p-6"
+              className="p-6 transition-all duration-300 ease-out hover:shadow-[0_0_25px_rgba(201,169,98,0.1)] hover:border-[var(--accent)]"
               style={{ 
                 border: '1px solid var(--border-subtle)',
                 backgroundColor: 'var(--bg-header)'
@@ -501,7 +502,7 @@ const Biography = () => {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm capitalize transition-opacity hover:opacity-60"
+              className="text-sm capitalize transition-all duration-300 ease-out hover:opacity-80 hover:text-[var(--accent)] skill-hover relative"
               style={{ color: 'var(--text-muted)' }}
             >
               {platform}

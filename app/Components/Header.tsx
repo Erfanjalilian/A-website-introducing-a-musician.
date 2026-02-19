@@ -80,18 +80,19 @@ const Header = () => {
 
   return (
     <header className="relative" style={{ backgroundColor: 'var(--bg-header)' }}>
-      <div className="absolute top-0 left-0 right-0 h-px opacity-50" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+      <div className="absolute top-0 left-0 right-0 h-px opacity-50 animate-border-glow" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
 
       {/* Desktop */}
       <div className="hidden md:block py-12">
         <div className="w-full max-w-7xl mx-auto px-6 lg:px-10">
           <div className="grid grid-cols-12 gap-6 items-center">
             <div className="col-span-3 flex flex-col justify-center space-y-5">
-              {allNavLinks.map(link => (
+              {allNavLinks.map((link, idx) => (
                 <Link 
                   key={link.id} 
                   href={link.href} 
-                  className="text-sm tracking-[0.2em] uppercase text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors duration-300"
+                  className="text-sm tracking-[0.2em] uppercase text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors duration-300 animate-link-slide-in"
+                  style={{ animationDelay: `${idx * 80}ms` }}
                 >
                   {link.title}
                 </Link>
@@ -99,19 +100,19 @@ const Header = () => {
             </div>
 
             <div className="col-span-6 flex flex-col items-center justify-center text-center px-4">
-              <h1 className="font-light tracking-[0.15em] uppercase text-[4.5rem] lg:text-[5.25rem] leading-[1.1] mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
+              <h1 className="font-light tracking-[0.15em] uppercase text-[4.5rem] lg:text-[5.25rem] leading-[1.1] mb-2 animate-title-scale" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
                 Kazemi
               </h1>
-              <h2 className="text-base lg:text-lg font-light tracking-[0.35em] uppercase" style={{ color: 'var(--text-dim)' }}>
+              <h2 className="text-base lg:text-lg font-light tracking-[0.35em] uppercase animate-fade-in-up" style={{ color: 'var(--text-dim)', animationDelay: '200ms' }}>
                 {latestTitle}
               </h2>
             </div>
 
             <div className="col-span-3 flex items-center justify-end gap-5">
-              {socialIcons.map(social => {
+              {socialIcons.map((social, idx) => {
                 const Icon = social.icon;
                 return (
-                  <a key={social.id} href={social.href} target="_blank" rel="noopener noreferrer" className="p-2 rounded-full hover:scale-110 hover:bg-white/5 transition-all duration-300" aria-label={social.label}>
+                  <a key={social.id} href={social.href} target="_blank" rel="noopener noreferrer" className="p-2 rounded-full hover:scale-110 hover:bg-white/5 transition-all duration-300 animate-fade-in-up animate-icon-hover" style={{ animationDelay: `${300 + idx * 50}ms` }} aria-label={social.label}>
                     <Icon className="w-5 h-5" />
                   </a>
                 );
@@ -142,14 +143,15 @@ const Header = () => {
 
         {/* Mobile Menu Dropdown */}
         {menuOpen && (
-          <div className="fixed inset-0 z-10 bg-black/95 pt-20 px-5">
+          <div className="fixed inset-0 z-10 bg-black/95 pt-20 px-5 animate-menu-slide-in">
             <div className="flex flex-col space-y-4">
-              {allNavLinks.map(link => (
+              {allNavLinks.map((link, idx) => (
                 <Link
                   key={link.id}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="text-xl tracking-[0.15em] uppercase text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors duration-300 py-2"
+                  className="text-xl tracking-[0.15em] uppercase text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors duration-300 py-2 animate-link-slide-in"
+                  style={{ animationDelay: `${idx * 60}ms` }}
                 >
                   {link.title}
                 </Link>

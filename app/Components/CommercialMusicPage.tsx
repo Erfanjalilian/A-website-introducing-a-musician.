@@ -110,35 +110,39 @@ const PortfolioPage = () => {
   const toggleMedia = (projectId: string) =>
     setActiveMedia(prev => ({ ...prev, [projectId]: !prev[projectId] }));
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#1a1616' }}>
+      <div className="animate-pulse-scale rounded-full h-12 w-12 border-2 border-transparent" style={{ borderTopColor: '#c9a962', borderRightColor: '#c9a962' }} />
+    </div>
+  );
   if (error) return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>;
   if (!data) return null;
 
   return (
     <div className="min-h-screen py-20 md:py-32 relative overflow-hidden" style={{ backgroundColor: '#1a1616' }}>
       {/* Decorative elements */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full blur-3xl -translate-y-1/2 pointer-events-none" style={{ backgroundColor: 'rgba(201, 169, 98, 0.05)' }} />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full blur-3xl translate-y-1/2 pointer-events-none" style={{ backgroundColor: 'rgba(201, 169, 98, 0.05)' }} />
+      <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full blur-3xl -translate-y-1/2 pointer-events-none animate-fade-in" style={{ backgroundColor: 'rgba(201, 169, 98, 0.05)', animationDelay: '200ms', animationFillMode: 'forwards' }} />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full blur-3xl translate-y-1/2 pointer-events-none animate-fade-in" style={{ backgroundColor: 'rgba(201, 169, 98, 0.05)', animationDelay: '300ms', animationFillMode: 'forwards' }} />
       
       <div className="max-w-6xl mx-auto px-6 md:px-10 relative z-10">
         {/* Header Section */}
         <div className="mb-16 md:mb-24">
-          <div className="inline-block mb-6 px-4 py-2 rounded-full" style={{ backgroundColor: 'rgba(201, 169, 98, 0.1)', borderColor: 'rgba(201, 169, 98, 0.3)', borderWidth: '1px' }}>
+          <div className="inline-block mb-6 px-4 py-2 rounded-full opacity-0 animate-fade-in-up" style={{ backgroundColor: 'rgba(201, 169, 98, 0.1)', borderColor: 'rgba(201, 169, 98, 0.3)', borderWidth: '1px', animationDelay: '100ms', animationFillMode: 'forwards' }}>
             <p className="text-xs tracking-widest uppercase font-medium" style={{ color: 'rgba(201, 169, 98, 0.8)' }}>Portfolio</p>
           </div>
-          <h1 className="text-5xl md:text-7xl font-light tracking-tight mb-6 leading-tight" style={{ color: '#f5f2ed' }}>
+          <h1 className="text-5xl md:text-7xl font-light tracking-tight mb-6 leading-tight opacity-0 animate-fade-in-up" style={{ color: '#f5f2ed', animationDelay: '150ms', animationFillMode: 'forwards' }}>
             {data.pageTitle}
           </h1>
-          <p className="text-lg md:text-xl max-w-3xl leading-relaxed font-light" style={{ color: '#9a9590' }}>{data.description}</p>
+          <p className="text-lg md:text-xl max-w-3xl leading-relaxed font-light opacity-0 animate-fade-in-up" style={{ color: '#9a9590', animationDelay: '200ms', animationFillMode: 'forwards' }}>{data.description}</p>
         </div>
 
         <div className="space-y-24">
           {data.sections.map((section, sIdx) => (
-            <section key={section.id} className="relative">
+            <section key={section.id} className="relative opacity-0 animate-fade-in-up" style={{ animationDelay: `${250 + sIdx * 100}ms`, animationFillMode: 'forwards' }}>
               {/* Section Header */}
               <div className="mb-14 relative">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="h-1 w-12 rounded" style={{ backgroundColor: '#c9a962' }} />
+                  <div className="h-1 w-12 rounded bg-gradient-to-r from-[#c9a962] to-[#c9a962]/50 transform origin-left" style={{ background: '#c9a962', animation: `scale-x 0.6s ease-out ${'300 + sIdx * 100'}ms forwards`, transformOrigin: 'left' }} />
                   <h2 className="text-xl md:text-2xl tracking-wide uppercase font-light" style={{ color: '#c9a962' }}>{section.title}</h2>
                 </div>
                 <p className="text-base md:text-lg max-w-2xl leading-relaxed ml-16" style={{ color: '#6b6662' }}>{section.description}</p>
@@ -146,9 +150,9 @@ const PortfolioPage = () => {
 
               {/* Projects Grid */}
               <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
-                {section.projects.map(project => (
-                  <article key={project.id} className="group relative h-full">
-                    <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl">
+                {section.projects.map((project, pIdx) => (
+                  <article key={project.id} className="group relative h-full opacity-0 animate-fade-in-up" style={{ animationDelay: `${300 + sIdx * 100 + pIdx * 80}ms`, animationFillMode: 'forwards' }}>
+                    <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl transition-all duration-500 ease-out group-hover:shadow-[0_0_50px_rgba(201,169,98,0.2)]">
                       {activeMedia[project.id] ? (
                         <iframe
                           src={getEmbedUrl(project.media.url, project.media.type)}
@@ -163,9 +167,9 @@ const PortfolioPage = () => {
                           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ backgroundImage: 'linear-gradient(to top, rgba(0,0,0,0.4), transparent)' }} />
                           <div className="relative z-10 flex flex-col items-center gap-4">
                             {project.media.type === 'video' ? (
-                              <FilmIcon className="w-14 h-14 opacity-60 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110" style={{ color: '#c9a962' }} />
+                              <FilmIcon className="w-14 h-14 opacity-60 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110 group-hover:animate-pulse-scale" style={{ color: '#c9a962' }} />
                             ) : (
-                              <PlayIcon className="w-14 h-14 opacity-60 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110" style={{ color: '#c9a962' }} />
+                              <PlayIcon className="w-14 h-14 opacity-60 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110 group-hover:animate-pulse-scale" style={{ color: '#c9a962' }} />
                             )}
                             <span className="text-xs uppercase tracking-widest opacity-70 group-hover:opacity-100 transition-all duration-500" style={{ color: '#c9a962' }}>Play {project.media.type}</span>
                           </div>
@@ -187,7 +191,7 @@ const PortfolioPage = () => {
         </div>
 
         {/* Footer */}
-        <div className="mt-24 pt-12" style={{ borderTopColor: 'rgba(201, 169, 98, 0.15)', borderTopWidth: '1px' }}>
+        <div className="mt-24 pt-12 opacity-0 animate-fade-in" style={{ borderTopColor: 'rgba(201, 169, 98, 0.15)', borderTopWidth: '1px', animationDelay: '500ms', animationFillMode: 'forwards' }}>
           <p className="text-xs uppercase tracking-widest" style={{ color: '#6b6662' }}>
             Last updated: {new Date(data.lastUpdated).toLocaleDateString('en-US', {
               year: 'numeric', month: 'long', day: 'numeric'

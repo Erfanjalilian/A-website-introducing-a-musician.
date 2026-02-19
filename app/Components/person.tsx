@@ -35,7 +35,7 @@ const Person = ({
     >
       {/* Subtle accent line */}
       <div 
-        className="absolute top-0 left-0 right-0 h-px opacity-30"
+        className="absolute top-0 left-0 right-0 h-px opacity-30 animate-border-glow"
         style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
       />
 
@@ -53,8 +53,7 @@ const Person = ({
           >
             <div 
               className="relative w-[280px] h-[280px] md:w-[360px] md:h-[360px] overflow-hidden
-                         transition-all duration-500 ease-out
-                         hover:shadow-[0_0_40px_rgba(201,169,98,0.15)]"
+                         transition-all duration-500 ease-out profile-image-glow"
               style={{ 
                 borderRadius: '2px',
                 border: '1px solid var(--border-subtle)'
@@ -96,8 +95,8 @@ const Person = ({
                   key={index}
                   className={`
                     text-sm md:text-base font-light leading-relaxed
-                    opacity-0
-                    ${mounted ? 'animate-fade-in-up' : ''}
+                    opacity-0 relative
+                    ${mounted ? 'animate-fade-in-up skill-hover' : ''}
                   `}
                   style={{ 
                     color: 'var(--text-muted)',
@@ -105,7 +104,7 @@ const Person = ({
                     animationFillMode: 'forwards'
                   }}
                 >
-                  {skill}
+              {skill}
                 </p>
               ))}
             </div>

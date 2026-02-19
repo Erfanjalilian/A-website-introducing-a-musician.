@@ -109,7 +109,7 @@ const DemoVideos = () => {
     >
       {/* Accent line */}
       <div 
-        className="absolute top-0 left-0 right-0 h-px opacity-30"
+        className="absolute top-0 left-0 right-0 h-px opacity-30 animate-border-glow"
         style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
       />
 
@@ -193,7 +193,8 @@ const DemoVideos = () => {
                     >
                       <div
                         className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center
-                                   transition-transform duration-300 ease-out group-hover:scale-110 group-hover:shadow-[0_0_40px_rgba(201,169,98,0.4)]"
+                                   transition-transform duration-300 ease-out group-hover:scale-110 group-hover:shadow-[0_0_40px_rgba(201,169,98,0.4)]
+                                   group-hover:animate-pulse-scale"
                         style={{ backgroundColor: 'rgba(201, 169, 98, 0.95)' }}
                       >
                         <PlayIcon className="w-8 h-8 md:w-10 md:h-10 ml-1" style={{ color: 'var(--bg-body)' }} />
@@ -210,14 +211,22 @@ const DemoVideos = () => {
 
               <div className="mt-5 text-center md:text-right">
                 <h3 
-                  className="text-base md:text-lg font-light tracking-[0.1em] mb-2 line-clamp-1"
-                  style={{ color: 'var(--text-primary)' }}
+                  className="text-base md:text-lg font-light tracking-[0.1em] mb-2 line-clamp-1 opacity-0 animate-text-reveal"
+                  style={{ 
+                    color: 'var(--text-primary)',
+                    animationDelay: `${300 + index * 100}ms`,
+                    animationFillMode: 'forwards'
+                  }}
                 >
                   {video.title}
                 </h3>
                 <p 
-                  className="text-sm leading-relaxed line-clamp-2"
-                  style={{ color: 'var(--text-muted)' }}
+                  className="text-sm leading-relaxed line-clamp-2 opacity-0 animate-text-reveal"
+                  style={{ 
+                    color: 'var(--text-muted)',
+                    animationDelay: `${350 + index * 100}ms`,
+                    animationFillMode: 'forwards'
+                  }}
                 >
                   {video.description}
                 </p>

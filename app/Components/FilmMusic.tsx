@@ -84,7 +84,7 @@ const FilmMusic = () => {
           </h2>
           <div className="flex justify-center items-center h-64">
             <div 
-              className="animate-spin rounded-full h-10 w-10 border-2 border-transparent"
+              className="animate-spin rounded-full h-10 w-10 border-2 border-transparent animate-pulse-scale"
               style={{ borderTopColor: 'var(--accent)', borderRightColor: 'var(--accent)' }}
             />
           </div>
@@ -168,8 +168,8 @@ const FilmMusic = () => {
         {/* No projects message */}
         {projects.length === 0 && (
           <p 
-            className="text-center py-16 text-sm tracking-wide"
-            style={{ color: 'var(--text-muted)' }}
+            className="text-center py-16 text-sm tracking-wide animate-fade-in-up"
+            style={{ color: 'var(--text-muted)', animationDelay: '300ms', animationFillMode: 'forwards' }}
           >
             No film music projects found.
           </p>
@@ -194,10 +194,12 @@ const FilmMusic = () => {
                 <div 
                   className="relative w-full aspect-[4/3] overflow-hidden
                              transition-all duration-500 ease-out
-                             group-hover:shadow-[0_0_50px_rgba(201,169,98,0.12)]"
+                             group-hover:shadow-[0_0_50px_rgba(201,169,98,0.12)]
+                             animate-image-reveal"
                   style={{ 
                     border: '1px solid var(--border-subtle)',
-                    borderRadius: '2px'
+                    borderRadius: '2px',
+                    animationDelay: `${250 + index * 100}ms`
                   }}
                 >
                   <Image
@@ -220,11 +222,12 @@ const FilmMusic = () => {
                   {/* Year badge */}
                   {project.year && (
                     <div 
-                      className="absolute top-4 right-4 text-xs tracking-[0.15em] uppercase px-3 py-1.5"
+                      className="absolute top-4 right-4 text-xs tracking-[0.15em] uppercase px-3 py-1.5 animate-badge-slide-in"
                       style={{ 
                         backgroundColor: 'rgba(20,18,18,0.7)',
                         color: 'var(--text-muted)',
-                        border: '1px solid var(--border-subtle)'
+                        border: '1px solid var(--border-subtle)',
+                        animationDelay: `${300 + index * 100}ms`
                       }}
                     >
                       {project.year}
@@ -236,22 +239,35 @@ const FilmMusic = () => {
                 <div className="mt-5 text-center md:text-right">
                   <h3 
                     className="text-base md:text-lg font-light tracking-[0.1em] mb-2 line-clamp-1
-                               transition-colors duration-300 group-hover:text-[var(--accent)]"
-                    style={{ color: 'var(--text-primary)' }}
+                               transition-colors duration-300 group-hover:text-[var(--accent)]
+                               opacity-0 animate-text-reveal"
+                    style={{ 
+                      color: 'var(--text-primary)',
+                      animationDelay: `${350 + index * 100}ms`,
+                      animationFillMode: 'forwards'
+                    }}
                   >
                     {project.title}
                   </h3>
                   <p 
-                    className="text-sm leading-relaxed line-clamp-3"
-                    style={{ color: 'var(--text-muted)' }}
+                    className="text-sm leading-relaxed line-clamp-3 opacity-0 animate-text-reveal"
+                    style={{ 
+                      color: 'var(--text-muted)',
+                      animationDelay: `${400 + index * 100}ms`,
+                      animationFillMode: 'forwards'
+                    }}
                   >
                     {getProjectDescription(project)}
                   </p>
                   
                   {/* Demo disclaimer */}
                   <p 
-                    className="text-xs mt-4 italic tracking-wide"
-                    style={{ color: 'var(--text-dim)' }}
+                    className="text-xs mt-4 italic tracking-wide opacity-0 animate-text-reveal"
+                    style={{ 
+                      color: 'var(--text-dim)',
+                      animationDelay: `${450 + index * 100}ms`,
+                      animationFillMode: 'forwards'
+                    }}
                   >
                     These clips do not contain original music from the TV/films. Re-scored for demonstration purposes.
                   </p>
