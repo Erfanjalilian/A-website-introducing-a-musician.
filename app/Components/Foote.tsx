@@ -39,11 +39,33 @@ const Footer = () => {
     <>
       <footer className="bg-[#1d1919] text-white py-12 border-t border-gray-800 relative">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="w-full md:w-[60%] mx-auto text-center relative">
-            <p className="text-sm text-gray-400">
-              Designed by Engineer Mahmoud Zargari
-            </p>
+          <div className="w-full md:w-[60%] mx-auto text-center relative space-y-2">
             
+            <p className="text-sm text-gray-400">
+              Designed by Engineer Erfan Jaliliyan
+            </p>
+
+            {/* Email */}
+            <a
+              href="mailto:erfanjaliliyan83@gmail.com"
+              className="text-sm text-gray-500 hover:text-white transition-colors duration-300 inline-flex items-center gap-2"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M16 12H8m8 0l-4 4m4-4l-4-4M4 6h16M4 18h16"
+                />
+              </svg>
+              erfanjaliliyan83@gmail.com
+            </a>
+
             {/* Admin Login Link */}
             <button
               onClick={handleAdminClick}
@@ -57,7 +79,10 @@ const Footer = () => {
 
       {/* Password Modal */}
       {showPasswordModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          onClick={handleClose}
+        >
           <div 
             className="bg-[#1d1919] border border-gray-800 rounded-lg w-full max-w-md relative animate-fade-in"
             onClick={(e) => e.stopPropagation()}
