@@ -42,29 +42,11 @@ const Footer = () => {
           <div className="w-full md:w-[60%] mx-auto text-center relative space-y-2">
             
             <p className="text-sm text-gray-400">
-              Designed by Engineer Erfan Jaliliyan
+              Designed by Engineer mahmood zargari
             </p>
 
             {/* Email */}
-            <a
-              href="mailto:erfanjaliliyan83@gmail.com"
-              className="text-sm text-gray-500 hover:text-white transition-colors duration-300 inline-flex items-center gap-2"
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 12H8m8 0l-4 4m4-4l-4-4M4 6h16M4 18h16"
-                />
-              </svg>
-              erfanjaliliyan83@gmail.com
-            </a>
+       
 
             {/* Admin Login Link */}
             <button
