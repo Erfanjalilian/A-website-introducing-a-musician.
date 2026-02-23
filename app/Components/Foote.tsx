@@ -1,13 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { FaInstagram, FaLinkedin, FaTwitter, FaSoundcloud, FaSpotify } from 'react-icons/fa';
+import { MdEmail } from 'react-icons/md';
 
 const Footer = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleAdminClick = () => {
     setShowPasswordModal(true);
@@ -35,23 +42,113 @@ const Footer = () => {
     setError('');
   };
 
+  const socialLinks = [
+    { 
+      icon: <FaInstagram className="w-5 h-5" />, 
+      href: 'https://instagram.com/arashkazemi', 
+      label: 'Instagram',
+      delay: 100
+    },
+    { 
+      icon: <FaLinkedin className="w-5 h-5" />, 
+      href: 'https://linkedin.com/in/arashkazemi', 
+      label: 'LinkedIn',
+      delay: 200
+    },
+    { 
+      icon: <FaTwitter className="w-5 h-5" />, 
+      href: 'https://twitter.com/arashkazemi', 
+      label: 'Twitter',
+      delay: 300
+    },
+    { 
+      icon: <FaSoundcloud className="w-5 h-5" />, 
+      href: 'https://soundcloud.com/arashkazemi', 
+      label: 'SoundCloud',
+      delay: 400
+    },
+    { 
+      icon: <FaSpotify className="w-5 h-5" />, 
+      href: 'https://spotify.com/artist/arashkazemi', 
+      label: 'Spotify',
+      delay: 500
+    },
+    { 
+      icon: <MdEmail className="w-5 h-5" />, 
+      href: 'mailto:info@arashkazemi.com', 
+      label: 'Email',
+      delay: 600
+    },
+  ];
+
   return (
     <>
-      <footer className="bg-[#1d1919] text-white py-12 border-t border-gray-800 relative">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="w-full md:w-[60%] mx-auto text-center relative space-y-2">
-            
-            <p className="text-sm text-gray-400">
-              Designed by Engineer mahmood zargari
-            </p>
+      <footer className="bg-[#1d1919] text-white py-12 border-t border-gray-800 relative overflow-hidden">
+        {/* Animated background gradient */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-800 to-transparent animate-shimmer" />
+        </div>
 
-            {/* Email */}
-       
+        <div className="max-w-7xl mx-auto px-4 md:px-8 relative">
+          <div className="w-full md:w-[80%] mx-auto text-center relative space-y-6">
+            
+            {/* Social Media Icons */}
+            <div className="flex justify-center items-center space-x-4 md:space-x-6">
+              {socialLinks.map((social, index) => (
+                <a
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  className={`
+                    text-gray-400 hover:text-white transform hover:scale-110 
+                    transition-all duration-300 opacity-0 translate-y-4
+                    ${mounted ? 'animate-social-appear' : ''}
+                  `}
+                  style={{ 
+                    animationDelay: `${social.delay}ms`,
+                    animationFillMode: 'forwards'
+                  }}
+                >
+                  {social.icon}
+                </a>
+              ))}
+            </div>
+
+            {/* Decorative line */}
+            <div 
+              className={`
+                w-16 h-px mx-auto bg-gray-700
+                opacity-0 scale-x-0
+                transition-all duration-1000 ease-out
+                ${mounted ? 'opacity-100 scale-x-100' : ''}
+              `}
+              style={{ transitionDelay: '700ms' }}
+            />
+
+            {/* Designer credit */}
+            <p 
+              className={`
+                text-sm text-gray-400
+                opacity-0 translate-y-4
+                transition-all duration-1000 ease-out
+                ${mounted ? 'opacity-100 translate-y-0' : ''}
+              `}
+              style={{ transitionDelay: '800ms' }}
+            >
+              Designed by Engineer Mahmood Zargari
+            </p>
 
             {/* Admin Login Link */}
             <button
               onClick={handleAdminClick}
-              className="absolute right-0 top-1/2 -translate-y-1/2 text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300 hidden md:block"
+              className={`
+                text-sm font-medium text-gray-400 hover:text-white 
+                transition-colors duration-300 opacity-0 translate-y-4
+                ${mounted ? 'opacity-100 translate-y-0' : ''}
+              `}
+              style={{ transitionDelay: '900ms' }}
             >
               Admin Panel Login
             </button>
@@ -66,7 +163,7 @@ const Footer = () => {
           onClick={handleClose}
         >
           <div 
-            className="bg-[#1d1919] border border-gray-800 rounded-lg w-full max-w-md relative animate-fade-in"
+            className="bg-[#1d1919] border border-gray-800 rounded-lg w-full max-w-md relative animate-modal-appear"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
@@ -135,8 +232,40 @@ const Footer = () => {
           }
         }
         
+        @keyframes social-appear {
+          0% {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+        
         .animate-fade-in {
           animation: fade-in 0.2s ease-out forwards;
+        }
+        
+        .animate-modal-appear {
+          animation: fade-in 0.3s ease-out forwards;
+        }
+        
+        .animate-social-appear {
+          animation: social-appear 0.6s ease-out forwards;
+        }
+        
+        .animate-shimmer {
+          animation: shimmer 3s infinite;
         }
       `}</style>
     </>
