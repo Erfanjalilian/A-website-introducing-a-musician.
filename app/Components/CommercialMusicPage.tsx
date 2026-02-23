@@ -202,9 +202,87 @@ const PortfolioPage = () => {
           </p>
         </div>
 
+        {/* NEW STATIC SECTION - Biography/About */}
+        <div className="mb-20 md:mb-24 lg:mb-32">
+          {/* Section header */}
+          <div className="mb-10 md:mb-14 relative opacity-0 animate-fade-in-up" style={{ animationDelay: '250ms', animationFillMode: 'forwards' }}>
+            <div className="flex items-center gap-3 md:gap-4 mb-2 md:mb-4">
+              <div className="h-0.5 md:h-1 w-8 md:w-12 rounded bg-gradient-to-r from-[#c9a962] to-[#c9a962]/50 transform origin-left" style={{ background: '#c9a962', animation: `scale-x 0.6s ease-out forwards`, transformOrigin: 'left' }} />
+              <h2 className="text-base md:text-lg lg:text-2xl tracking-wide uppercase font-light" style={{ color: '#c9a962' }}>Biography</h2>
+            </div>
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg max-w-2xl leading-relaxed ml-8 md:ml-16" style={{ color: '#6b6662' }}>
+              The journey behind the music
+            </p>
+          </div>
+
+          {/* First row - Text left, Image right */}
+          <div className="flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-16 mb-16 md:mb-20 lg:mb-24">
+            {/* Text content - left side */}
+            <div className="w-full md:w-1/2 opacity-0 animate-slide-in-left" style={{ animationDelay: '300ms', animationFillMode: 'forwards' }}>
+              <div className="prose prose-invert max-w-none">
+                <p className="text-sm sm:text-base md:text-lg leading-relaxed mb-4" style={{ color: '#f5f2ed' }}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+                <p className="text-sm sm:text-base md:text-lg leading-relaxed" style={{ color: '#9a9590' }}>
+                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+              </div>
+              {/* Decorative line */}
+              <div className="mt-6 w-16 h-px" style={{ backgroundColor: 'rgba(201, 169, 98, 0.3)' }} />
+            </div>
+
+            {/* Image - right side */}
+            <div className="w-full md:w-1/2 opacity-0 animate-slide-in-right" style={{ animationDelay: '350ms', animationFillMode: 'forwards' }}>
+              <div className="relative w-full aspect-[4/3] rounded-lg md:rounded-xl overflow-hidden shadow-2xl transform transition-transform duration-700 hover:scale-[1.02] group">
+                <Image
+                  src="https://thumbs.dreamstime.com/b/drum-kit-silhouette-dramatic-stage-lighting-live-music-concert-promotion-high-quality-411020100.jpg"
+                  alt="Musician performing"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
+            </div>
+          </div>
+
+          {/* Second row - Image left, Text right */}
+          <div className="flex flex-col md:flex-row-reverse gap-8 md:gap-12 lg:gap-16">
+            {/* Text content - right side (but in reverse order) */}
+            <div className="w-full md:w-1/2 opacity-0 animate-slide-in-right" style={{ animationDelay: '400ms', animationFillMode: 'forwards' }}>
+              <div className="prose prose-invert max-w-none">
+                <p className="text-sm sm:text-base md:text-lg leading-relaxed mb-4" style={{ color: '#f5f2ed' }}>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                </p>
+                <p className="text-sm sm:text-base md:text-lg leading-relaxed" style={{ color: '#9a9590' }}>
+                  Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
+                </p>
+              </div>
+              {/* Decorative line */}
+              <div className="mt-6 w-16 h-px" style={{ backgroundColor: 'rgba(201, 169, 98, 0.3)' }} />
+            </div>
+
+            {/* Image - left side */}
+            <div className="w-full md:w-1/2 opacity-0 animate-slide-in-left" style={{ animationDelay: '450ms', animationFillMode: 'forwards' }}>
+              <div className="relative w-full aspect-[4/3] rounded-lg md:rounded-xl overflow-hidden shadow-2xl transform transition-transform duration-700 hover:scale-[1.02] group">
+                <Image
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ98SLAbKoJmGA9Xffm2Fq9Z5VBM968xJxvsw&s"
+                  alt="Studio recording session"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="space-y-16 md:space-y-20 lg:space-y-24">
           {data.sections.map((section, sIdx) => (
-            <section key={section.id} className="relative opacity-0 animate-fade-in-up" style={{ animationDelay: `${250 + sIdx * 100}ms`, animationFillMode: 'forwards' }}>
+            <section key={section.id} className="relative opacity-0 animate-fade-in-up" style={{ animationDelay: `${500 + sIdx * 100}ms`, animationFillMode: 'forwards' }}>
               {/* Section Header */}
               <div className="mb-8 md:mb-10 lg:mb-14 relative">
                 <div className="flex items-center gap-3 md:gap-4 mb-2 md:mb-4">
@@ -217,7 +295,7 @@ const PortfolioPage = () => {
               {/* Projects Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-10">
                 {section.projects.map((project, pIdx) => (
-                  <article key={project.id} className="group relative h-full opacity-0 animate-fade-in-up" style={{ animationDelay: `${300 + sIdx * 100 + pIdx * 80}ms`, animationFillMode: 'forwards' }}>
+                  <article key={project.id} className="group relative h-full opacity-0 animate-fade-in-up" style={{ animationDelay: `${550 + sIdx * 100 + pIdx * 80}ms`, animationFillMode: 'forwards' }}>
                     <div className="relative w-full aspect-video rounded-lg md:rounded-xl overflow-hidden shadow-xl md:shadow-2xl transition-all duration-500 ease-out group-hover:shadow-[0_0_50px_rgba(201,169,98,0.2)]">
                       {activeMedia[project.id] ? (
                         <iframe
@@ -257,7 +335,7 @@ const PortfolioPage = () => {
         </div>
 
         {/* Footer */}
-        <div className="mt-16 md:mt-20 lg:mt-24 pt-8 md:pt-12 opacity-0 animate-fade-in" style={{ borderTopColor: 'rgba(201, 169, 98, 0.15)', borderTopWidth: '1px', animationDelay: '500ms', animationFillMode: 'forwards' }}>
+        <div className="mt-16 md:mt-20 lg:mt-24 pt-8 md:pt-12 opacity-0 animate-fade-in" style={{ borderTopColor: 'rgba(201, 169, 98, 0.15)', borderTopWidth: '1px', animationDelay: '800ms', animationFillMode: 'forwards' }}>
           <p className="text-[10px] md:text-xs uppercase tracking-widest" style={{ color: '#6b6662' }}>
             Last updated: {new Date(data.lastUpdated).toLocaleDateString('en-US', {
               year: 'numeric', month: 'long', day: 'numeric'
@@ -265,6 +343,39 @@ const PortfolioPage = () => {
           </p>
         </div>
       </div>
+
+      {/* Add custom animation styles */}
+      <style jsx>{`
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        @keyframes slideInRight {
+          from {
+            opacity: 0;
+            transform: translateX(50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        .animate-slide-in-left {
+          animation: slideInLeft 0.8s ease-out forwards;
+        }
+        
+        .animate-slide-in-right {
+          animation: slideInRight 0.8s ease-out forwards;
+        }
+      `}</style>
     </div>
   );
 };
