@@ -12,7 +12,9 @@ const nextConfig: NextConfig = {
       "images.unsplash.com",                  // تصاویر واقعی مثل عکس پروفایل Person
       "example.com",                           // دامنه تست قبلی
       "www.jowhareh.com",                      // دامنه عکس واقعی
-      "encrypted-tbn0.gstatic.com"             // دامنه جدید برای تصویر Google
+      "encrypted-tbn0.gstatic.com",
+      "images.pexels.com",
+      "bandzoogle.com"            // دامنه جدید برای تصویر Google
     ],
   },
 };

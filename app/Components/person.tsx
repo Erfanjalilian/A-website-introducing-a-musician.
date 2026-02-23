@@ -5,108 +5,155 @@ import Image from 'next/image';
 
 interface PersonProps {
   name?: string;
-  skills?: string[];
+  role?: string;
+  description?: string;
   imageUrl?: string;
 }
 
 const Person = ({
   name = "Arash Kazemi",
-  skills = [
-     'Design ',
-     'Mixing',
-     'Editing',
-     'Music Production',
-     'Recording',
-     'SFX',
-     'VO'
-  ],
-  imageUrl = "https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+  role = "Musician & Sound Designer",
+  description = "Crafting sonic experiences through innovative sound design, music production, and audio engineering. Pushing the boundaries of what's possible in sound.",
+  imageUrl = "https://bandzoogle.com/files/2929/bz-blog-new-stock-images.jpg"
 }: PersonProps) => {
   const [mounted, setMounted] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     setMounted(true);
+    
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
-  return (
-    <section 
-      className="relative py-16 md:py-24 overflow-hidden"
-      style={{ backgroundColor: 'var(--bg-body)' }}
-    >
-      {/* Subtle accent line */}
-      <div 
-        className="absolute top-0 left-0 right-0 h-px opacity-30 animate-border-glow"
-        style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
-      />
+  // Parallax effect for the image
+  const imageTranslateY = scrollY * 0.5;
 
-      <div className="w-full max-w-5xl mx-auto px-6 md:px-10">
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-          
-          {/* Left - Profile Image */}
+  return (
+    <section className="relative w-full h-screen overflow-hidden">
+      {/* Full-screen image with parallax */}
+      <div 
+        className="absolute inset-0 w-full h-[120%] -top-[10%]"
+        style={{ 
+          transform: `translateY(${imageTranslateY}px)`,
+          transition: 'transform 0.1s ease-out'
+        }}
+      >
+        <Image
+          src={imageUrl}
+          alt={name}
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
+          quality={90}
+        />
+      </div>
+
+      {/* Semi-transparent black overlay - this keeps the image visible underneath */}
+      <div className="absolute inset-0 bg-black/50" />
+      {/* The /50 means 50% opacity, so the image is still 50% visible through the overlay */}
+
+      {/* Content overlay */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-full max-w-4xl mx-auto px-6 md:px-10 text-center">
+          {/* Name with animation */}
+          <h1 
+            className={`
+              font-light tracking-[0.15em] uppercase mb-4
+              text-3xl md:text-5xl lg:text-6xl xl:text-7xl
+              opacity-0 translate-y-8
+              transition-all duration-1000 ease-out
+              ${mounted ? 'opacity-100 translate-y-0' : ''}
+            `}
+            style={{ 
+              fontFamily: 'var(--font-display)',
+              color: 'white',
+              textShadow: '0 2px 10px rgba(0,0,0,0.3)'
+            }}
+          >
+            {name}
+          </h1>
+
+          {/* Role with animation (delayed) */}
+          <h2 
+            className={`
+              font-light tracking-[0.3em] uppercase mb-6
+              text-sm md:text-base lg:text-lg
+              opacity-0 translate-y-8
+              transition-all duration-1000 ease-out
+              ${mounted ? 'opacity-100 translate-y-0' : ''}
+            `}
+            style={{ 
+              color: 'rgba(255,255,255,0.9)',
+              textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+              transitionDelay: '200ms'
+            }}
+          >
+            {role}
+          </h2>
+
+          {/* Description with animation (further delayed) */}
+          <p 
+            className={`
+              max-w-2xl mx-auto
+              font-light leading-relaxed
+              text-sm md:text-base lg:text-lg
+              opacity-0 translate-y-8
+              transition-all duration-1000 ease-out
+              ${mounted ? 'opacity-100 translate-y-0' : ''}
+            `}
+            style={{ 
+              color: 'rgba(255,255,255,0.8)',
+              textShadow: '0 2px 6px rgba(0,0,0,0.3)',
+              transitionDelay: '400ms'
+            }}
+          >
+            {description}
+          </p>
+
+          {/* Decorative line with animation */}
           <div 
             className={`
-              flex-shrink-0
-              opacity-0
-              ${mounted ? 'animate-fade-in-up' : ''}
+              w-16 h-px mx-auto mt-8
+              opacity-0 scale-x-0
+              transition-all duration-1000 ease-out
+              ${mounted ? 'opacity-100 scale-x-100' : ''}
             `}
-            style={{ animationDelay: '100ms', animationFillMode: 'forwards' }}
-          >
-            <div 
-              className="relative w-[280px] h-[280px] md:w-[360px] md:h-[360px] overflow-hidden
-                         transition-all duration-500 ease-out profile-image-glow"
-              style={{ 
-                borderRadius: '2px',
-                border: '1px solid var(--border-subtle)'
-              }}
-            >
-              <Image
-                src={imageUrl}
-                alt={name}
-                width={400}
-                height={400}
-                className="w-full h-full object-cover transition-transform duration-700 ease-out hover:scale-105"
-                priority
-              />
-            </div>
-          </div>
+            style={{ 
+              backgroundColor: 'rgba(255,255,255,0.4)',
+              transitionDelay: '600ms'
+            }}
+          />
 
-          {/* Right - Name & Skills */}
-          <div className="flex-1 text-center md:text-right">
-            <h2 
-              className={`
-                font-light tracking-[0.15em] uppercase mb-6 md:mb-8
-                text-2xl md:text-3xl lg:text-[2rem]
-                opacity-0
-                ${mounted ? 'animate-fade-in-up' : ''}
-              `}
-              style={{ 
-                fontFamily: 'var(--font-display)',
-                color: 'var(--text-primary)',
-                animationDelay: '200ms',
-                animationFillMode: 'forwards'
-              }}
-            >
-              {name}
-            </h2>
-            
-            <div className="space-y-4 md:space-y-5">
-              {skills.map((skill, index) => (
-                <p
-                  key={index}
-                  className={`
-                    text-sm md:text-base font-light leading-relaxed
-                    opacity-0 relative
-                    ${mounted ? 'animate-fade-in-up skill-hover' : ''}
-                  `}
-                  style={{ 
-                    color: 'var(--text-muted)',
-                    animationDelay: `${300 + index * 80}ms`,
-                    animationFillMode: 'forwards'
-                  }}
-                >
-              {skill}
-                </p>
-              ))}
+          {/* Scroll indicator with animation */}
+          <div 
+            className={`
+              absolute bottom-8 left-1/2 transform -translate-x-1/2
+              flex flex-col items-center gap-2
+              opacity-0
+              transition-all duration-1000 ease-out
+              ${mounted ? 'opacity-100' : ''}
+            `}
+            style={{ 
+              transitionDelay: '800ms'
+            }}
+          >
+            <span className="text-xs tracking-[0.2em] uppercase" style={{ color: 'rgba(255,255,255,0.6)' }}>
+              Scroll
+            </span>
+            <div className="w-5 h-9 rounded-full border border-white/30 flex justify-center">
+              <div 
+                className="w-1 h-2 rounded-full mt-2 animate-bounce"
+                style={{ backgroundColor: 'white' }}
+              />
             </div>
           </div>
         </div>
