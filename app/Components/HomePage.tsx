@@ -6,7 +6,6 @@ export default function HomePage(){
     <div className="bg-[#1d1919] min-h-screen">
       <Person />
       <FilmMusic />
-      <Reels />
     </div>
   );
 }
