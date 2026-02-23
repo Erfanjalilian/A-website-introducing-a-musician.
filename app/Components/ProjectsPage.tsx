@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { PlayIcon } from '@heroicons/react/24/solid';
+import { PlayIcon, PauseIcon } from '@heroicons/react/24/solid';
 
 interface Project {
   id: string;
@@ -33,6 +32,8 @@ const ProjectsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [mounted, setMounted] = useState(false);
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
 
   useEffect(() => {
     setMounted(true);
@@ -49,7 +50,14 @@ const ProjectsPage = () => {
         }
         
         const data = await response.json();
-        setProjects(data);
+        
+        // Add video URLs to projects (you'll need to replace these with actual video paths)
+        const projectsWithVideos = data.map((project: Project, index: number) => ({
+          ...project,
+          videoUrl: project.videoUrl || `/videos/project-${index + 1}.mp4` // Fallback video path
+        }));
+        
+        setProjects(projectsWithVideos);
         setError(null);
       } catch (err) {
         setError('There was a problem loading the projects');
@@ -61,6 +69,58 @@ const ProjectsPage = () => {
 
     fetchProjects();
   }, []);
+
+  // Cleanup video playback when component unmounts or video changes
+  useEffect(() => {
+    if (playingVideoId) {
+      // Pause all other videos
+      Object.keys(videoRefs.current).forEach(key => {
+        if (key !== playingVideoId && videoRefs.current[key]) {
+          videoRefs.current[key]?.pause();
+        }
+      });
+    }
+  }, [playingVideoId]);
+
+  const handlePlayVideo = (projectId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (playingVideoId === projectId) {
+      // If clicking on the same video, toggle play/pause
+      const video = videoRefs.current[projectId];
+      if (video) {
+        if (isVideoPlaying) {
+          video.pause();
+        } else {
+          video.play().catch(() => {
+            // Autoplay was prevented
+          });
+        }
+        setIsVideoPlaying(!isVideoPlaying);
+      }
+    } else {
+      // Switch to new video
+      setPlayingVideoId(projectId);
+      setIsVideoPlaying(true);
+    }
+  };
+
+  const handleVideoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleCloseVideo = (projectId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (videoRefs.current[projectId]) {
+      videoRefs.current[projectId]?.pause();
+    }
+    setPlayingVideoId(null);
+    setIsVideoPlaying(false);
+  };
 
   const filteredProjects = selectedCategory === 'all'
     ? projects
@@ -87,7 +147,7 @@ const ProjectsPage = () => {
           </h1>
           <div className="flex justify-center items-center h-64">
             <div 
-              className="animate-spin rounded-full h-10 w-10 border-2 border-transparent animate-pulse-scale"
+              className="animate-spin rounded-full h-10 w-10 border-2 border-transparent"
               style={{ borderTopColor: 'var(--accent)', borderRightColor: 'var(--accent)' }}
             />
           </div>
@@ -131,7 +191,7 @@ const ProjectsPage = () => {
     >
       {/* Accent line */}
       <div 
-        className="absolute top-0 left-0 right-0 h-px opacity-30 animate-border-glow"
+        className="absolute top-0 left-0 right-0 h-px opacity-30"
         style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}
       />
 
@@ -251,9 +311,8 @@ const ProjectsPage = () => {
         {/* Project grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
           {filteredProjects.map((project, index) => (
-            <Link 
+            <div 
               key={project.id} 
-              href={`/projects/${project.slug}`}
               className={`group block opacity-0 ${mounted ? 'animate-fade-in-up' : ''}`}
               style={{ 
                 animationDelay: `${340 + index * 80}ms`,
@@ -269,15 +328,58 @@ const ProjectsPage = () => {
                 }}
               >
                 {/* Image / Video */}
-                <div className="relative w-full aspect-[4/3] overflow-hidden">
-                  {playingVideoId === project.id && project.videoUrl ? (
-                    <video
-                      src={project.videoUrl}
-                      controls
-                      autoPlay
-                      className="w-full h-full object-cover"
-                    />
+                <div className="relative w-full aspect-[4/3] overflow-hidden bg-black">
+                  {playingVideoId === project.id ? (
+                    // Video Player
+                    <div className="relative w-full h-full">
+                      <video
+                        ref={el => {
+                          videoRefs.current[project.id] = el;
+                        }}
+                        src={project.videoUrl}
+                        className="w-full h-full object-cover"
+                        autoPlay
+                        loop
+                        playsInline
+                        onClick={handleVideoClick}
+                        onPlay={() => setIsVideoPlaying(true)}
+                        onPause={() => setIsVideoPlaying(false)}
+                      />
+                      
+                      {/* Video Controls Overlay */}
+                      <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <button
+                          onClick={(e) => handlePlayVideo(project.id, e)}
+                          className="flex items-center justify-center w-14 h-14 rounded-full transition-transform duration-300 hover:scale-110"
+                          style={{ backgroundColor: 'rgba(201, 169, 98, 0.95)' }}
+                          aria-label={isVideoPlaying ? 'Pause' : 'Play'}
+                        >
+                          {isVideoPlaying ? (
+                            <PauseIcon className="w-7 h-7" style={{ color: 'var(--bg-body)' }} />
+                          ) : (
+                            <PlayIcon className="w-7 h-7 ml-1" style={{ color: 'var(--bg-body)' }} />
+                          )}
+                        </button>
+                      </div>
+
+                      {/* Close button */}
+                      <button
+                        onClick={(e) => handleCloseVideo(project.id, e)}
+                        className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center
+                                   transition-all duration-300 hover:scale-110 hover:rotate-90"
+                        style={{ 
+                          backgroundColor: 'rgba(20,18,18,0.8)',
+                          border: '1px solid var(--border-subtle)'
+                        }}
+                        aria-label="Close video"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--text-muted)' }}>
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
                   ) : (
+                    // Image Preview
                     <>
                       <Image
                         src={project.coverImage}
@@ -299,10 +401,7 @@ const ProjectsPage = () => {
                       {/* Play button overlay - only show if video exists */}
                       {project.videoUrl && (
                         <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setPlayingVideoId(project.id);
-                          }}
+                          onClick={(e) => handlePlayVideo(project.id, e)}
                           className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-full h-full"
                           aria-label={`Play video for ${project.title}`}
                         >
@@ -314,14 +413,15 @@ const ProjectsPage = () => {
                     </>
                   )}
                   
-                  {/* Badges */}
-                  <div className="absolute top-3 left-3 flex flex-wrap gap-2">
+                  {/* Badges - Always visible */}
+                  <div className="absolute top-3 left-3 flex flex-wrap gap-2 z-10">
                     <span 
                       className="text-xs tracking-[0.1em] uppercase px-3 py-1.5"
                       style={{ 
                         backgroundColor: 'rgba(20,18,18,0.75)',
                         color: 'var(--text-muted)',
-                        border: '1px solid var(--border-subtle)'
+                        border: '1px solid var(--border-subtle)',
+                        backdropFilter: 'blur(4px)'
                       }}
                     >
                       {getCategoryName(project.category)}
@@ -332,7 +432,8 @@ const ProjectsPage = () => {
                         style={{ 
                           backgroundColor: 'rgba(20,18,18,0.75)',
                           color: 'var(--text-muted)',
-                          border: '1px solid var(--border-subtle)'
+                          border: '1px solid var(--border-subtle)',
+                          backdropFilter: 'blur(4px)'
                         }}
                       >
                         {project.year}
@@ -341,7 +442,7 @@ const ProjectsPage = () => {
                   </div>
 
                   {project.featured && (
-                    <div className="absolute top-3 right-3">
+                    <div className="absolute top-3 right-3 z-10">
                       <span 
                         className="text-xs tracking-[0.1em] uppercase px-3 py-1.5"
                         style={{ 
@@ -355,11 +456,10 @@ const ProjectsPage = () => {
                   )}
                 </div>
 
-                {/* Project info */}
+                {/* Project info - Clickable area removed */}
                 <div className="p-5 text-left">
                   <h2 
-                    className="text-lg font-light tracking-[0.08em] mb-2 line-clamp-1
-                               transition-colors duration-300 group-hover:text-[var(--accent)]"
+                    className="text-lg font-light tracking-[0.08em] mb-2 line-clamp-1"
                     style={{ color: 'var(--text-primary)' }}
                   >
                     {project.title}
@@ -374,20 +474,18 @@ const ProjectsPage = () => {
                     </p>
                   )}
                   
-                  <span 
-                    className="inline-block text-xs tracking-[0.15em] uppercase border-b 
-                               transition-colors duration-300 
-                               group-hover:text-[var(--accent)] group-hover:border-[var(--accent)]"
-                    style={{ 
-                      color: 'var(--text-dim)',
-                      borderColor: 'var(--border-subtle)'
-                    }}
-                  >
-                    View Project →
-                  </span>
+                  {/* Video status indicator */}
+                  {playingVideoId === project.id && (
+                    <div className="flex items-center gap-2 mt-2">
+                      <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: 'var(--accent)' }} />
+                      <span className="text-xs tracking-wide" style={{ color: 'var(--accent)' }}>
+                        Now Playing
+                      </span>
+                    </div>
+                  )}
                 </div>
               </article>
-            </Link>
+            </div>
           ))}
         </div>
 
