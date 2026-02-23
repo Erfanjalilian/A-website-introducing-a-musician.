@@ -121,6 +121,7 @@ const Header = () => {
       {/* Mobile */}
       <div className="md:hidden">
         <div className="flex items-center justify-between px-5 py-4 relative">
+          {/* Hamburger Menu Button */}
           <button 
             onClick={() => setMenuOpen(!menuOpen)} 
             className="z-50 p-2 rounded-lg hover:bg-white/5 transition-colors duration-200" 
