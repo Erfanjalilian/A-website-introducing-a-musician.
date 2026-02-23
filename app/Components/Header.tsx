@@ -101,9 +101,18 @@ const Header = () => {
               ))}
             </div>
 
-            {/* Right side - Empty div for balance */}
-            <div className="w-[200px]">
-              {/* This empty div maintains the space */}
+            {/* Right side - Name */}
+            <div className="flex items-center">
+              <span 
+                className="font-light tracking-[0.15em] uppercase text-lg animate-fade-in-up"
+                style={{ 
+                  fontFamily: 'var(--font-display)',
+                  color: 'var(--text-primary)',
+                  animationDelay: '300ms'
+                }}
+              >
+                Arash Kazemi
+              </span>
             </div>
           </div>
         </div>
@@ -121,6 +130,19 @@ const Header = () => {
           >
             {menuOpen ? <XMarkIcon className="w-6 h-6" strokeWidth={1.5} /> : <Bars3Icon className="w-6 h-6" strokeWidth={1.5} />}
           </button>
+
+          {/* Name in mobile (only visible when menu is closed) */}
+          {!menuOpen && (
+            <span 
+              className="font-light tracking-[0.12em] uppercase text-base"
+              style={{ 
+                fontFamily: 'var(--font-display)',
+                color: 'var(--text-primary)'
+              }}
+            >
+              Arash Kazemi
+            </span>
+          )}
 
           {/* Empty div for spacing on the right when menu is closed */}
           {!menuOpen && <div className="w-10"></div>}
