@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, JSX } from 'react';
 import Link from 'next/link';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon, HomeIcon, FolderIcon, UserIcon, BriefcaseIcon, DocumentIcon } from '@heroicons/react/24/outline';
 
 type Page = {
   id: number;
@@ -10,6 +10,19 @@ type Page = {
   slug: string;
   content: string;
   createdAt: string;
+};
+
+// Map of icons for different link types
+const getIconForLink = (title: string) => {
+  const iconMap: { [key: string]: JSX.Element } = {
+    'Home': <HomeIcon className="w-5 h-5" />,
+    'Projects': <FolderIcon className="w-5 h-5" />,
+    'Biography': <UserIcon className="w-5 h-5" />,
+    'Portfolio Page': <BriefcaseIcon className="w-5 h-5" />,
+  };
+  
+  // Default icon for dynamic pages
+  return iconMap[title] || <DocumentIcon className="w-5 h-5" />;
 };
 
 const Header = () => {
@@ -64,37 +77,33 @@ const Header = () => {
   ];
 
   return (
-    <header className="relative" style={{ backgroundColor: 'var(--bg-header)' }}>
+    <header className="fixed top-0 left-0 right-0 z-50" style={{ backgroundColor: 'var(--bg-header)' }}>
       <div className="absolute top-0 left-0 right-0 h-px opacity-50 animate-border-glow" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
 
       {/* Desktop */}
-      <div className="hidden md:block py-12">
+      <div className="hidden md:block py-4">
         <div className="w-full max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid grid-cols-12 gap-6 items-center">
-            <div className="col-span-3 flex flex-col justify-center space-y-5">
+          <div className="flex items-center justify-between">
+            {/* Left side - Navigation Links with Icons */}
+            <div className="flex items-center space-x-8">
               {allNavLinks.map((link, idx) => (
                 <Link 
                   key={link.id} 
                   href={link.href} 
-                  className="text-sm tracking-[0.2em] uppercase text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors duration-300 animate-link-slide-in"
+                  className="group flex items-center space-x-2 text-sm tracking-[0.2em] uppercase text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all duration-300 animate-link-slide-in"
                   style={{ animationDelay: `${idx * 80}ms` }}
                 >
-                  {link.title}
+                  <span className="transform group-hover:scale-110 transition-transform duration-300">
+                    {getIconForLink(link.title)}
+                  </span>
+                  <span>{link.title}</span>
                 </Link>
               ))}
             </div>
 
-            <div className="col-span-6 flex flex-col items-center justify-center text-center px-4">
-              <h1 className="font-light tracking-[0.15em] uppercase text-[4.5rem] lg:text-[5.25rem] leading-[1.1] mb-2 animate-title-scale" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-                Kazemi
-              </h1>
-              <h2 className="text-base lg:text-lg font-light tracking-[0.35em] uppercase animate-fade-in-up" style={{ color: 'var(--text-dim)', animationDelay: '200ms' }}>
-                {latestTitle}
-              </h2>
-            </div>
-
-            <div className="col-span-3">
-              {/* Empty div to maintain grid layout */}
+            {/* Right side - Empty div for balance */}
+            <div className="w-[200px]">
+              {/* This empty div maintains the space */}
             </div>
           </div>
         </div>
@@ -102,27 +111,19 @@ const Header = () => {
 
       {/* Mobile */}
       <div className="md:hidden">
-        <div className="flex flex-col items-center justify-start px-5 pt-6 pb-4 relative">
+        <div className="flex items-center justify-between px-5 py-4 relative">
           <button 
             onClick={() => setMenuOpen(!menuOpen)} 
-            className="absolute top-5 left-5 z-50 p-2 rounded-lg hover:bg-white/5 transition-colors duration-200" 
+            className="z-50 p-2 rounded-lg hover:bg-white/5 transition-colors duration-200" 
             style={{ color: 'var(--text-muted)' }} 
             aria-expanded={menuOpen} 
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           >
-            {menuOpen ? <XMarkIcon className="w-8 h-8" strokeWidth={1.5} /> : <Bars3Icon className="w-8 h-8" strokeWidth={1.5} />}
+            {menuOpen ? <XMarkIcon className="w-6 h-6" strokeWidth={1.5} /> : <Bars3Icon className="w-6 h-6" strokeWidth={1.5} />}
           </button>
 
-          {!menuOpen && (
-            <div className="text-center mb-4">
-              <h1 className="font-light text-3xl tracking-[0.12em] uppercase mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-                Arash Kazemi
-              </h1>
-              <h2 className="text-sm font-light tracking-[0.3em] uppercase" style={{ color: 'var(--text-dim)' }}>
-                {latestTitle}
-              </h2>
-            </div>
-          )}
+          {/* Empty div for spacing on the right when menu is closed */}
+          {!menuOpen && <div className="w-10"></div>}
         </div>
 
         {/* Mobile Menu Dropdown */}
@@ -140,13 +141,13 @@ const Header = () => {
             <div className="absolute top-0 left-0 right-0 h-px opacity-30" style={{ background: 'linear-gradient(90deg, transparent, var(--accent, #c9a962), transparent)' }} />
             
             {/* Menu items container */}
-            <div className="flex flex-col space-y-6 max-w-sm mx-auto">
+            <div className="flex flex-col space-y-4 max-w-sm mx-auto">
               {allNavLinks.map((link, idx) => (
                 <Link
                   key={link.id}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="group relative text-xl tracking-[0.15em] uppercase transition-all duration-300 py-3 px-4 rounded-lg hover:pl-6"
+                  className="group relative flex items-center space-x-4 text-lg tracking-[0.15em] uppercase transition-all duration-300 py-3 px-4 rounded-lg hover:pl-6"
                   style={{ 
                     color: 'var(--text-muted, #9a9590)',
                     animationDelay: `${idx * 60}ms`,
@@ -158,8 +159,13 @@ const Header = () => {
                   {/* Decorative left border on hover */}
                   <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 group-hover:w-1 group-hover:h-6 transition-all duration-300" style={{ backgroundColor: 'var(--accent, #c9a962)' }} />
                   
+                  {/* Icon */}
+                  <span className="relative z-10 transform group-hover:scale-110 transition-transform duration-300">
+                    {getIconForLink(link.title)}
+                  </span>
+                  
                   {/* Menu item text */}
-                  <span className="relative z-10 block text-center md:text-left">
+                  <span className="relative z-10">
                     {link.title}
                   </span>
                 </Link>
@@ -168,14 +174,15 @@ const Header = () => {
               {/* Close button at bottom */}
               <button
                 onClick={() => setMenuOpen(false)}
-                className="mt-8 py-3 px-6 rounded-lg text-sm tracking-widest uppercase transition-all duration-300 hover:scale-105"
+                className="mt-6 py-3 px-6 rounded-lg text-sm tracking-widest uppercase transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2"
                 style={{ 
                   backgroundColor: 'rgba(201, 169, 98, 0.1)',
                   color: 'var(--accent, #c9a962)',
                   border: '1px solid rgba(201, 169, 98, 0.3)'
                 }}
               >
-                Close Menu
+                <XMarkIcon className="w-4 h-4" />
+                <span>Close Menu</span>
               </button>
             </div>
           </div>
